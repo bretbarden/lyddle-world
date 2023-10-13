@@ -84,7 +84,7 @@ function App() {
     <div className="App">
       <h1> Login or Signup  </h1>
         <Header />
-        <Home />
+        <MainPage />
         <Login />
         
 

@@ -10,7 +10,7 @@ from flask_bcrypt import Bcrypt
 
 # Local imports
 from config import app, db, api
-from models import db, User, StoryInput, ChatGptResponse, DallEResponse
+from models import User, StoryInput, ChatGptResponse, DallEResponse
 
 
 bcrypt = Bcrypt(app)
@@ -33,7 +33,7 @@ def current_user():
 
 @app.route('/')
 def index():
-    return '<h1>Project Server</h1>'
+    return '<h1>Project Server Test</h1>'
 
 
 
@@ -44,7 +44,7 @@ def create_user():
         json = request.json
         pw_hash = bcrypt.generate_password_hash(json['password']).decode('utf-8')
         new_user = User(
-            email_address=json['email_address'],
+            email=json['email'],
             password = pw_hash,
             first_name = json['first_name'],
             last_name = json['last_name'],
@@ -97,6 +97,19 @@ def logout():
 
 
 # Write routes for creating and viewing the stories.
+@app.post(URL_PREFIX + "/creatstory")
+def create_story():
+    try:
+        data = request.json
+        new_story = StoryInput(**data)
+        new_story.email = current_user()
+        db.session.add(new_story)
+        db.session.commmit()
+        return jsonify( new_story.to_dict() ), 201
+    except Exception as e:
+        return jsonify( {'error' : str(e)} ), 406
+    
+
 
 
 

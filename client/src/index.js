@@ -41,14 +41,23 @@ const router = createBrowserRouter([
                 path: "storyreturn",
                 element: <StoryReturn />
             },
+            {
+                path: "login",
+                element: <Login />
+            }
         ]
     }
 ])
 
+// Below approach does not use router
+// const container = document.getElementById("root");
+// const root = createRoot(container);
+// root.render(<App />);
 
-const container = document.getElementById("root");
-const root = createRoot(container);
-root.render(<App />);
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render( <RouterProvider router={router} /> );
+
+
 
 
 
