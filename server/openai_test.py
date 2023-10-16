@@ -1,6 +1,7 @@
 
 import openai
-openai.api_key = ''
+import apikeys
+openai.api_key = apikeys.openai_apikey
 
 # Test Chat GPT calldfc
 

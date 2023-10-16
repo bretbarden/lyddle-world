@@ -1,16 +1,17 @@
 import React from "react";
-import App from "./components/App";
 import "./index.css";
-import { createRoot } from "react-dom/client";
+import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import App from './components/App'
-import MainPage from '/.components/MainPage'
+import MainPage from './components/MainPage'
 import About from './components/About'
 import StoryForm from './components/StoryForm'
-import Login from './components/User/Login.jsx'
-import Signup from './components/User/Signup.jsx'
-
+import Login from './components/UserPanel/Login.jsx'
+import Signup from './components/UserPanel/Signup.jsx'
+import Contact from "./components/Contact";
+import StoryReturn from "./components/StoryReturn";
+import ErrorPage from "./components/ErrorPage";
 
 
 //Loaders would go here//
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
             {
                 path: "storyreturn",
                 element: <StoryReturn />
+            },
+            {
+                path: "signup",
+                element: <Signup />
             },
             {
                 path: "login",

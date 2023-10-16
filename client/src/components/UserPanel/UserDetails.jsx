@@ -1,4 +1,4 @@
-function UserInfo({currentUser, logout}) {
+function UserDetails({currentUser, logout}) {
 
     return (
       <div className='user-details'>
@@ -9,4 +9,4 @@ function UserInfo({currentUser, logout}) {
   
   }
   
-  export default UserInfo
+  export default UserDetails

@@ -8,7 +8,7 @@ const POST_HEADERS = {
     'Accepts': 'application/json'
   }
   
-  const URL = "http://localhost:5555/api/v1"
+const URL = "/api/v1"
 
 
 
@@ -47,7 +47,7 @@ function StoryForm (){
             childOtherFeatures, childLocation, childClothing, childInterests, storySetting}
 
         
-        fetch('http://localhost:5000/stories', {
+        fetch(URL + '/stories', {
             method: "POST",
             headers: POST_HEADERS,
             body: JSON.stringify(newStoryInput)

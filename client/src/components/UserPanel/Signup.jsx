@@ -27,7 +27,7 @@ function Signup({attemptSignup}) {
       <input type="text"
       onChange={handleChangeEmail}
       value={email}
-      placeholder='username'
+      placeholder='email address'
       />
 
       <input type="text"

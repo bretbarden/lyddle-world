@@ -15,31 +15,31 @@ from sqlalchemy_serializer import SerializerMixin
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
     password_hash = db.Column(db.String, nullable=False)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
-    phone_number = db.Column(db.Integer, nullable=True)
-    street_line1 = db.Column(db.String, nullable=True)
-    street_line2 = db.Column(db.String, nullable=True)
-    zip_code = db.Column(db.Integer, nullable=True)
-    city = db.Column(db.String, nullable=True)
-    state = db.Column(db.String, nullable=True)
+    # Cut out the other fields for now
+    # first_name = db.Column(db.String, nullable=True)
+    # last_name = db.Column(db.String, nullable=True)
+    # phone_number = db.Column(db.Integer, nullable=True)
+    # street_line1 = db.Column(db.String, nullable=True)
+    # street_line2 = db.Column(db.String, nullable=True)
+    # zip_code = db.Column(db.Integer, nullable=True)
+    # city = db.Column(db.String, nullable=True)
+    # state = db.Column(db.String, nullable=True)
 
     # A user can have many StoryInputs
     storyinputs = db.relationship('StoryInput', back_populates='user')
 
+    serialize_rules = ('-storyinputs','-password_hash')
+
     
 
 
-
-
-
-
 class StoryInput (db.Model, SerializerMixin):
-    id = db.Column(db.Integer, nullable=False)
+    __tablename__ = 'story_inputs'
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     child_name = db.Column(db.String, nullable=False)
-    child_age = db.Column(db.Integr, nullable = False )
+    child_age = db.Column(db.Integer, nullable = False )
     child_race = db.Column(db.String, nullable=False)
     child_hairstyle = db.Column(db.String, nullable=False)
     child_eyecolor = db.Column(db.String, nullable=False)
@@ -55,51 +55,59 @@ class StoryInput (db.Model, SerializerMixin):
     chatgptresponses = db.relationship('ChatGptResponse', back_populates='storyinput')
     dalleresponses = db.relationship('DallEResponse', back_populates = 'storyinput')
 
+    serialize_rules = ('-user', '-chatgptresponses', '-dalleresponses')
+
 
 
 
 # Eventually after MVP, we will need to go back here and make versions of story
 class ChatGptResponse (db.Model, SerializerMixin):
-    id = db.Column(db.Integer, nullable=False)
+    __tablename__ = "chatgpt_responses"
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     full_response = db.Column(db.String, nullable=False)
     front_cover = db.Column(db.String, nullable=False)
     title_page = db.Column(db.String, nullable=False)
-    page01 = db.Column(db.String, nullable=True)
-    page02 = db.Column(db.String, nullable=True)
-    page03 = db.Column(db.String, nullable=True)
-    page04 = db.Column(db.String, nullable=True)
-    page05 = db.Column(db.String, nullable=True)
-    page06 = db.Column(db.String, nullable=True)
-    page07 = db.Column(db.String, nullable=True)
-    page08 = db.Column(db.String, nullable=True)
-    page09 = db.Column(db.String, nullable=True)
-    page10 = db.Column(db.String, nullable=True)
+    page01_text = db.Column(db.String, nullable=True)
+    page02_text = db.Column(db.String, nullable=True)
+    page03_text = db.Column(db.String, nullable=True)
+    page04_text = db.Column(db.String, nullable=True)
+    page05_text = db.Column(db.String, nullable=True)
+    page06_text = db.Column(db.String, nullable=True)
+    page07_text = db.Column(db.String, nullable=True)
+    page08_text = db.Column(db.String, nullable=True)
+    page09_text = db.Column(db.String, nullable=True)
+    page10_text = db.Column(db.String, nullable=True)
     back_cover = db.Column(db.String, nullable=True)
 
-    storyinput_id = db.Column(db.Integer, db.ForeignKey('storyinputs.id'), nullable=False)
+    storyinput_id = db.Column(db.Integer, db.ForeignKey('story_inputs.id'), nullable=False)
 
     storyinput = db.relationship('StoryInput', back_populates='chatgptresponses')
+
+    serialize_rules = ('-storyinput',)
 
 
 
 
 class DallEResponse (db.Model, SerializerMixin):
-    id = db.Column(db.Integer, nullable=False)
-    front_cover_image_url = db.Column(db.String, nullable=False)
-    page01_image_url = db.Column(db.String, nullable=False)
-    page02_image_url = db.Column(db.String, nullable=False)
-    page03_image_url = db.Column(db.String, nullable=False)
-    page04_image_url = db.Column(db.String, nullable=False)
-    page05_image_url = db.Column(db.String, nullable=False)
-    page06_image_url = db.Column(db.String, nullable=False)
-    page07_image_url = db.Column(db.String, nullable=False)
-    page08_image_url = db.Column(db.String, nullable=False)
-    page09_image_url = db.Column(db.String, nullable=False)
-    page10_image_url = db.Column(db.String, nullable=False)
+    __tablename__ = "dalle_responses"
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    front_cover_imageurl = db.Column(db.String, nullable=False)
+    page01_imageurl = db.Column(db.String, nullable=False)
+    page02_imageurl = db.Column(db.String, nullable=False)
+    page03_imageurl = db.Column(db.String, nullable=False)
+    page04_imageurl = db.Column(db.String, nullable=False)
+    page05_imageurl = db.Column(db.String, nullable=False)
+    page06_imageurl = db.Column(db.String, nullable=False)
+    page07_imageurl = db.Column(db.String, nullable=False)
+    page08_imageurl = db.Column(db.String, nullable=False)
+    page09_imageurl = db.Column(db.String, nullable=False)
+    page10_imageurl = db.Column(db.String, nullable=False)
     
-    storyinput_id = db.Column(db.Integer, db.ForeignKey('storyinputs.id'), nullable=False)
+    storyinput_id = db.Column(db.Integer, db.ForeignKey('story_inputs.id'), nullable=False)
 
     storyinput = db.relationship('StoryInput', back_populates='dalleresponses')
+
+    serialize_rules = ('-storyinput',)
 
 
 

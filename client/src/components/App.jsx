@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Header from "./Header";
+import MainPage from "./MainPage";
+import UserDetails from "./UserPanel";
+import Login from "./UserPanel/Login";
+import Signup from "./UserPanel/Signup"
+
 
 const POST_HEADERS = {
   "Content-Type": "application/json", 
@@ -8,7 +13,7 @@ const POST_HEADERS = {
 }
 
 // Create a const of URL for ease of reference
-const URL = "http://localhost:5555/api/v1"
+const URL = "/api/v1"
 
 
 function App() {
@@ -18,32 +23,46 @@ function App() {
   // Fetch request
   useEffect(() => {
     fetch( URL + '/check_session' )
-    .then (response => {
+    .then(response => {
       if (response.ok) {
         response.json()
-        .then ( data => setCurrentUser(data) )
+        .then (data => setCurrentUser(data))
       }
     })
-  }, [])
+  },[])
 
 
 
   // Signup, Login, and Log out
+  // async function attemptSignup(userInfo) {
+  //   try {
+  //     const response = await fetch(URL + "/users", {
+  //       method: "POST", 
+  //       headers: POST_HEADERS,
+  //       body: JSON.stringify(userInfo)    
+  //     })
+  //     if (response.ok) {
+  //       const data = await response.json()
+  //       setCurrentUser(data)
+  //     } else {
+  //       alert('Signup not sucessful')
+  //     }
+  //   } catch (error) {
+  //     alert (error)
+  //   }
+  // }
+
   async function attemptSignup(userInfo) {
-    try {
-      const response = await fetch(URL + "/users", {
-        method: "POST", 
-        headers: POST_HEADERS,
-        body: JSON.stringify(userInfo)    
-      })
-      if (response.ok) {
-        const data = await response.json()
-        setCurrentUser(data)
-      } else {
-        alert('Signup not sucessful')
-      }
-    } catch (error) {
-      alert (error)
+    const res = await fetch(URL + '/users', {
+      method: 'POST',
+      headers: POST_HEADERS,
+      body: JSON.stringify(userInfo)
+    })
+    if (res.ok) {
+      const data = await res.json()
+      setCurrentUser(data)
+    } else {
+      alert('Invalid sign up')
     }
   }
  
@@ -53,7 +72,7 @@ function App() {
       const response = await fetch (URL + "/login", {
         method: "POST",
         headers: POST_HEADERS,
-        body: json.stringify(userInfo)
+        body: JSON.stringify(userInfo)
       })
       if (response.ok) {
         const data = await response.json()
@@ -66,9 +85,10 @@ function App() {
     }
   }
 
-  function logout() {
-    setCurrentUser(null)
-  }
+  //Non-Cookie version of logout
+  // function logout() {
+  //   setCurrentUser(null)
+  // }
 
   // If using cookies, make logout delete cookies from the site based on the URL
   function logout() {
@@ -84,17 +104,12 @@ function App() {
     <div className="App">
       <h1> Login or Signup  </h1>
         <Header />
-        <MainPage />
-        <Login />
-        
-
-      <UserPanel
-      currentUser={currentUser}
-      attemptLogin={attemptLogin}
-      attemptSignup={attemptSignup}
-      logout={logout} />
-
-      <Notes />
+        {/* TO UPDATE: REPLACE BELOW WITH SEPARATE SIGNUP AND LOGIN */}
+        <UserDetails
+        currentUser={currentUser}
+        attemptLogin={attemptLogin}
+        attemptSignup={attemptSignup}
+        logout={logout} />
 
     </div>
   )

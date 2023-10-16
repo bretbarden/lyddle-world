@@ -1,6 +1,6 @@
 import Signup from './Signup'
 import Login from './Login'
-import UserInfo from "./UserInfo"
+import UserInfo from "./UserDetails"
 
 function User({currentUser, attemptLogin, attemptSignup, logout}) {
 
