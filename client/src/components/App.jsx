@@ -5,11 +5,12 @@ import MainPage from "./MainPage";
 import UserDetails from "./UserPanel";
 import Login from "./UserPanel/Login";
 import Signup from "./UserPanel/Signup"
+import { Outlet } from 'react-router-dom'
 
 
 const POST_HEADERS = {
   "Content-Type": "application/json", 
-  "Accept": "application/json"
+  "Accepts": "application/json"
 }
 
 // Create a const of URL for ease of reference
@@ -53,13 +54,13 @@ function App() {
   // }
 
   async function attemptSignup(userInfo) {
-    const res = await fetch(URL + '/users', {
+    const response = await fetch(URL + '/users', {
       method: 'POST',
       headers: POST_HEADERS,
       body: JSON.stringify(userInfo)
     })
-    if (res.ok) {
-      const data = await res.json()
+    if (response.ok) {
+      const data = await response.json()
       setCurrentUser(data)
     } else {
       alert('Invalid sign up')
@@ -104,12 +105,14 @@ function App() {
     <div className="App">
       <h1> Login or Signup  </h1>
         <Header />
+        <Outlet />
         {/* TO UPDATE: REPLACE BELOW WITH SEPARATE SIGNUP AND LOGIN */}
         <UserDetails
         currentUser={currentUser}
         attemptLogin={attemptLogin}
         attemptSignup={attemptSignup}
         logout={logout} />
+       
 
     </div>
   )

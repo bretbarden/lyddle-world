@@ -1,4 +1,8 @@
-# Phase 4 Full-Stack Application Project Template
+# Lyddle World Full-Stack Application
+
+# A note on API keys
+You will need your own OpenAI API to run the application. It can be called from a apikeys.py
+file located in the same director as the 
 
 ## Learning Goals
 

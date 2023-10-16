@@ -76,7 +76,7 @@ function StoryForm (){
                 type="integer"
                 name="childAge"
                 value={childAge}
-                placeholder="e.g., 2, 6, 7"
+                placeholder="0"
                 onChange={(e) => setChildAge(e.target.value)}/>
             <input
                 type="text"
