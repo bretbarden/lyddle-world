@@ -72,6 +72,7 @@ def create_user():
         db.session.commit()
         session['user_id'] = new_user.id
         return new_user.to_dict(), 201
+        # return jsonify(new_story.to_dict()), 201
     except Exception as e:
         return { 'error': str(e) }, 406
 
@@ -165,51 +166,37 @@ def logout():
 # need to modify this with the code to send it to OpenAI on post
 # and return 
 
-@app.post(URL_PREFIX + "/createstory")
+@app.post(URL_PREFIX + "/stories")
 def create_story():
+    # authorize()
     try:
         data = request.json
-        new_story = StoryInput(**data)
-        new_story.email = current_user()
+        print(data)
+        # new_story = StoryInput(**data)
+        new_story = StoryInput(
+            child_name=data['childName'],
+            child_age=data['childAge'],
+            child_race=data['childRace'],
+            child_hairstyle=data['childHairStyle'],
+            child_eyecolor=data['childEyeColor'],
+            child_other_features=data['childOtherFeatures'],
+            child_location=data['childLocation'],
+            child_clothing=data['childClothing'],
+            child_interests=data['childInterests'],
+            story_setting=data['storySetting']
+        )
+        new_story.user_id = current_user().id
+        print(new_story.to_dict)
         db.session.add(new_story)
         db.session.commit()
+
+        
+
         return jsonify( new_story.to_dict() ), 201
     except Exception as e:
         return jsonify( {'error' : str(e)} ), 406
     
-
-# @app.post(URL_PREFIX + "/createstory")
-# def create_story():
-#     try:
-#         data = request.json
-#         new_story = StoryInput(**data)
-#         new_story.email = current_user()
-#         db.session.add(new_story)
-#         db.session.commit()
-
-#         # Now try to submit it to OPENAI
-
-#         response = openai.ChatCompletion.create(
-#             model="gpt-3.5-turbo",
-#             messages=[
-#         )
-
-#         return jsonify( new_story.to_dict() ), 201
-#     except Exception as e:
-#         return jsonify( {'error' : str(e)} ), 406
-
     
-
-# def submit_openai():
-#     response = openai.ChatCompletion.create(
-#         model="gpt-3.5-turbo",
-#         messages=[
-#             {"role": "system", "content": "You are a helpful assistant."},
-#             {"role": "user", "content": "Who won the world series in 2020?"},
-#             {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-#             {"role": "user", "content": "Where was it played?"}
-#         ]
-#     )
 
 
 
