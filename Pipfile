@@ -12,6 +12,12 @@ sqlalchemy-serializer = "*"
 flask-restful = "*"
 flask-cors = "*"
 faker = "*"
+openai = "*"
+flask_bcrypt = "1.0.1"
+flask-login = "*"
+
+
+
 
 [requires]
 python_full_version = "3.8.13"

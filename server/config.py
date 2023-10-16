@@ -12,6 +12,7 @@ from sqlalchemy import MetaData
 
 # Instantiate app, set attributes
 app = Flask(__name__)
+app.secret_key = b'Y\xf1Xz\x00\xad|eQ\x80t \xca\x1a\x10K'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -27,5 +28,10 @@ db.init_app(app)
 # Instantiate REST API
 api = Api(app)
 
+# Turnning off CORS for now so I don't have to deal with it. 
+# UPDATE THIS LATER
 # Instantiate CORS
 CORS(app)
+#Change the CORS here to make sure localhost can access it
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
+# CORS(app, origins="*", supports_credentials=True)
