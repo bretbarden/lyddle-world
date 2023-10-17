@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 const POST_HEADERS = {
     'Content-Type': 'application/json',
-    'Accepts': 'application/json'
+    'Accept': 'application/json'
   }
   
 const URL = "/api/v1"
@@ -66,66 +66,86 @@ function StoryForm (){
  return (
     <div>
         <form onSubmit={handleSubmit}>
+            <label htmlFor="childName">Name</label>
             <input
                 type="text"
                 name="childName"
                 value={childName}
                 placeholder="e.g. Akeelah, Daphne, Jorge"
                 onChange={(e) => setChildName(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childAge">Age</label>
             <input
-                type="integer"
+                type="text"
                 name="childAge"
                 value={childAge}
-                placeholder="e.g., 2, 6, 7"
+                placeholder="0"
                 onChange={(e) => setChildAge(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childRace">Race</label>
             <input
                 type="text"
                 name="childRace"
                 value={childRace}
                 placeholder="Black, Asian, Hispanic or Latino, etc."
                 onChange={(e) => setChildRace(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childHairStyle">Hair Style</label>
             <input
                 type="text"
                 name="childHairStyle"
                 value={childHairStyle}
                 placeholder="e.g., wavy and down to shoulders, buzz cut"
                 onChange={(e) => setChildHairStyle(e.target.value)}/>
-            <input
+           <br></br>
+           <label htmlFor="childEyeColor">Eye Color</label>
+           <input
                 type="text"
                 name="childEyeColor"
                 value={childEyeColor}
                 placeholder="e.g., brown, green, blue, hazel"
                 onChange={(e) => setChildEyeColor(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childOtherFeatures">Other features?</label>
             <input
                 type="text"
                 name="childOtherFeatures"
                 value={childOtherFeatures}
                 placeholder="e.g., birthmark on right cheek, uses a wheelchair"
                 onChange={(e) => setChildOtherFeatures(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childLocation">Where does your child live?</label>
             <input
                 type="text"
                 name="childLocation"
                 value={childLocation}
                 placeholder="e.g., New York, Iowa, Salt Lake City"
                 onChange={(e) => setChildLocation(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childClothing">What clothing should your child wear?</label>
             <input
                 type="text"
                 name="childClothing"
                 value={childClothing}
                 placeholder="e.g., dress, overalls, hat)"
                 onChange={(e) => setChildClothing(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childInterests">Please list some of your child's interests</label>
             <input
                 type="text"
                 name="childInterests"
                 value={childInterests}
                 placeholder="e.g., dinosaurs, princesses, trains"
                 onChange={(e) => setChildInterests(e.target.value)}/>
+            <br></br>
+            <label htmlFor="storySetting">Where should the story take place?</label>
             <input
                 type="text"
                 name="storySetting"
                 value={storySetting}
                 placeholder="e.g., the mountains, space, the time of dinosaurs"
                 onChange={(e) => setStorySetting(e.target.value)}/>
+            <br></br>
 
             <button type="submit">Create Story</button>
         </form>

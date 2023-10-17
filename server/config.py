@@ -28,8 +28,6 @@ db.init_app(app)
 # Instantiate REST API
 api = Api(app)
 
-# Turnning off CORS for now so I don't have to deal with it. 
-# UPDATE THIS LATER
 # Instantiate CORS
 CORS(app)
 #Change the CORS here to make sure localhost can access it

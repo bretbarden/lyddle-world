@@ -5,30 +5,34 @@
 # Remote library imports
 from flask import jsonify, request, session
 from flask_bcrypt import Bcrypt
+from sqlalchemy.exc import SQLAlchemyError 
 import openai
+
 
 # Local imports
 from config import app, db, api
 from models import User, StoryInput, ChatGptResponse, DallEResponse
+import apikeys
 
+# Set API key
+openai.api_key = apikeys.openai_apikey
 
+# Set up brcrypt for password hashing
 bcrypt = Bcrypt(app)
 
-# Can comment out these since importing from config and models
-# migrate = Migrate(app, db)
-
-# db.init_app(app)
 
 # CHECK THIS: May not need this
 URL_PREFIX = '/api/v1'
-
 
 
 # Helps methods to condense code
 def current_user():
     return User.query.filter(User.id == session.get('user_id')).first()
 
-# Could add an admin here if wanted
+
+def authorize():
+    if not current_user():
+        return {'Message': "No logged in user. You must log in"}, 401
 
 
 @app.route('/')
@@ -36,34 +40,74 @@ def index():
     return '<h1>The server is working</h1>'
 
 
+@app.route(URL_PREFIX + '/users')
+def get_users():
+    authorize()
+    return jsonify( [user.to_dict() for user in current_user()] ), 200
 
-# Sign up route
-@app.post('/users')
+
+
+@app.route(URL_PREFIX + '/users')
+def get_storyinputs():
+    authorize()
+    return jsonify( [story_input.to_dict() for story_input in current_user().story_input] ), 200
+
+
+
+@app.post(URL_PREFIX + '/users')
 def create_user():
     try:
-        json = request.json
-        pw_hash = bcrypt.generate_password_hash(json['password']).decode('utf-8')
+        data = request.json
+        password_hash = bcrypt.generate_password_hash(data["password"]).decode('utf-8')
         new_user = User(
-            email=json['email'],
-            password = pw_hash,
-            # For now, commenting out other user info
-            # first_name = json['first_name'],
-            # last_name = json['last_name'],
-            # phone_number = json['phone_number'],
-            # street_line1 = json['street_line1'],
-            # street_line2 = json['street_line2'],
-            # zip_code = json['zip_code'],
-            # city = json['city'],
-            # state = json['state']
-            )
+            email=data['email'], 
+            password_hash=password_hash
+        )
         db.session.add(new_user)
         db.session.commit()
-
-        # Add the cookie here
-        session["user_id"] = new_user.id
+        session['user_id'] = new_user.id
         return new_user.to_dict(), 201
+        # return jsonify(new_story.to_dict()), 201
     except Exception as e:
-        return {'Error': str(e)}, 406
+        return { 'error': str(e) }, 406
+
+
+
+# # Sign up route
+# @app.post('/users')
+# def create_user():
+#     print("Create users triggered; before try")
+#     try:
+#         print("After the try")
+#         json = request.json
+#         print("got the JSON data from front end")
+#         pw_hash = bcrypt.generate_password_hash(json['password']).decode('utf-8')
+#         print("got to the password encryption")
+#         new_user = User(
+#             email=json['email'],
+#             password = pw_hash,
+#             # For now, commenting out other user info
+#             # first_name = json['first_name'],
+#             # last_name = json['last_name'],
+#             # phone_number = json['phone_number'],
+#             # street_line1 = json['street_line1'],
+#             # street_line2 = json['street_line2'],
+#             # zip_code = json['zip_code'],
+#             # city = json['city'],
+#             # state = json['state']
+#             )
+#         print("made the new user; not yet added to the database")
+#         db.session.add(new_user)
+#         db.session.commit()
+#         print("New user added to the database")
+
+#         # Add the cookie here
+#         session["user_id"] = new_user.id
+#         print("cookie was successful")
+#         return new_user.to_dict(), 201
+#     except Exception as e:
+#         print("error triggered as exception")
+#         return {'Error': str(e)}, 406
 
 
 # Login route
@@ -111,58 +155,135 @@ def logout():
     return {}, 204
 
 
-# Write routes for creating and viewing the stories.
-# need to modify this with the code to send it to OpenAI on post
-# and return 
 
-# @app.post(URL_PREFIX + "/createstory")
+# # Saving an earlier version of this post in case it breaks
+# @app.post(URL_PREFIX + "/stories")
 # def create_story():
+#     # authorize()
 #     try:
 #         data = request.json
-#         new_story = StoryInput(**data)
-#         new_story.email = current_user()
+#         print(data)
+#         # new_story = StoryInput(**data)
+#         new_story = StoryInput(
+#             child_name=data['childName'],
+#             child_age=data['childAge'],
+#             child_race=data['childRace'],
+#             child_hairstyle=data['childHairStyle'],
+#             child_eyecolor=data['childEyeColor'],
+#             child_other_features=data['childOtherFeatures'],
+#             child_location=data['childLocation'],
+#             child_clothing=data['childClothing'],
+#             child_interests=data['childInterests'],
+#             story_setting=data['storySetting']
+#         )
+#         new_story.user_id = current_user().id
+#         print(new_story.to_dict)
 #         db.session.add(new_story)
 #         db.session.commit()
 #         return jsonify( new_story.to_dict() ), 201
 #     except Exception as e:
 #         return jsonify( {'error' : str(e)} ), 406
     
-
-@app.post(URL_PREFIX + "/createstory")
-def create_story():
-    try:
-        data = request.json
-        new_story = StoryInput(**data)
-        new_story.email = current_user()
-        db.session.add(new_story)
-        db.session.commit()
-
-        # Now try to submit it to OPENAI
-
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-        )
-
-        return jsonify( new_story.to_dict() ), 201
-    except Exception as e:
-        return jsonify( {'error' : str(e)} ), 406
-
     
 
+@app.post(URL_PREFIX + "/stories")
+def create_story():
+    # authorize()
+    try:
+        data = request.json
+        print(data)
+        # new_story = StoryInput(**data)
+        new_story = StoryInput(
+            child_name=data['childName'],
+            child_age=data['childAge'],
+            child_race=data['childRace'],
+            child_hairstyle=data['childHairStyle'],
+            child_eyecolor=data['childEyeColor'],
+            child_other_features=data['childOtherFeatures'],
+            child_location=data['childLocation'],
+            child_clothing=data['childClothing'],
+            child_interests=data['childInterests'],
+            story_setting=data['storySetting']
+        )
+        new_story.user_id = current_user().id
+
+        with app.app_context():
+            db.session.add(new_story)
+            db.session.commit()
+
+            prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
+
+            chatgpt_response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=prompt,
+                max_tokens=3500
+            )
+            generated_text = chatgpt_response.choices[0].text.strip()
+
+            returned_story = ChatGptResponse(
+                full_response=generated_text,
+                storyinput_id=new_story.id
+            )
+            db.session.add(returned_story)
+            db.session.commit()
+
+        return jsonify(new_story.to_dict()), 201
+    except SQLAlchemyError as e:
+        # Handle database-related errors
+        db.session.rollback()  # Roll back the transaction on error
+        return jsonify({'error': str(e)}), 500
+    except Exception as e:
+        # Handle other exceptions
+        return jsonify({'error': str(e)}), 400
 
 
 
-def submit_openai():
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": "Who won the world series in 2020?"},
-            {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-            {"role": "user", "content": "Where was it played?"}
-        ]
-    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #     print(new_story.to_dict())
+    #     db.session.add(new_story)
+    #     db.session.commit()
+
+    #     prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incoporating some of the parameters in the dictionary. Please make the story relavent to the child's interests, and have the child overcome some kind of obstacle."
+
+    #     print(prompt)
+    #     chatgpt_response = openai.Completion.create(
+    #         engine="davinci-003",
+    #         prompt=prompt,
+    #         max_tokens=8000
+    #     )
+    #     print(chatgpt_response)
+    #     generated_text = chatgpt_response.choices[0].text.strip()
+    #     print(generated_text)
+
+    #     returned_story = ChatGptResponse(
+    #         full_response = generated_text,
+    #         storyinput_id = new_story.id
+    #     )
+    #     print(returned_story.to_dict())
+    #     db.session.add(returned_story)
+    #     db.session.commit()
+        
+    #     return jsonify( new_story.to_dict() ), 201
+    # except Exception as e:
+    #     return jsonify( {'error' : str(e)} ), 406
+    
 
 
 
