@@ -10,7 +10,7 @@ import { Outlet } from 'react-router-dom'
 
 const POST_HEADERS = {
   "Content-Type": "application/json", 
-  "Accepts": "application/json"
+  "Accept": "application/json"
 }
 
 // Create a const of URL for ease of reference
