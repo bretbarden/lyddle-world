@@ -55,3 +55,6 @@ __pycache__
 
 # API KEYS
 /server/apikeys.py
+
+# Notes
+notes.txt

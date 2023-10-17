@@ -66,7 +66,7 @@ function StoryForm (){
  return (
     <div>
         <form onSubmit={handleSubmit}>
-            <label for="childName">Name</label>
+            <label htmlFor="childName">Name</label>
             <input
                 type="text"
                 name="childName"
@@ -74,7 +74,7 @@ function StoryForm (){
                 placeholder="e.g. Akeelah, Daphne, Jorge"
                 onChange={(e) => setChildName(e.target.value)}/>
             <br></br>
-            <label for="childAge">Age</label>
+            <label htmlFor="childAge">Age</label>
             <input
                 type="text"
                 name="childAge"
@@ -82,7 +82,7 @@ function StoryForm (){
                 placeholder="0"
                 onChange={(e) => setChildAge(e.target.value)}/>
             <br></br>
-            <label for="childRace">Race</label>
+            <label htmlFor="childRace">Race</label>
             <input
                 type="text"
                 name="childRace"
@@ -90,7 +90,7 @@ function StoryForm (){
                 placeholder="Black, Asian, Hispanic or Latino, etc."
                 onChange={(e) => setChildRace(e.target.value)}/>
             <br></br>
-            <label for="childHairStyle">Hair Style</label>
+            <label htmlFor="childHairStyle">Hair Style</label>
             <input
                 type="text"
                 name="childHairStyle"
@@ -98,7 +98,7 @@ function StoryForm (){
                 placeholder="e.g., wavy and down to shoulders, buzz cut"
                 onChange={(e) => setChildHairStyle(e.target.value)}/>
            <br></br>
-           <label for="childEyeColor">Eye Color</label>
+           <label htmlFor="childEyeColor">Eye Color</label>
            <input
                 type="text"
                 name="childEyeColor"
@@ -106,7 +106,7 @@ function StoryForm (){
                 placeholder="e.g., brown, green, blue, hazel"
                 onChange={(e) => setChildEyeColor(e.target.value)}/>
             <br></br>
-            <label for="childOtherFeatures">Other features?</label>
+            <label htmlFor="childOtherFeatures">Other features?</label>
             <input
                 type="text"
                 name="childOtherFeatures"
@@ -114,7 +114,7 @@ function StoryForm (){
                 placeholder="e.g., birthmark on right cheek, uses a wheelchair"
                 onChange={(e) => setChildOtherFeatures(e.target.value)}/>
             <br></br>
-            <label for="childLocation">Where does your child live?</label>
+            <label htmlFor="childLocation">Where does your child live?</label>
             <input
                 type="text"
                 name="childLocation"
@@ -122,7 +122,7 @@ function StoryForm (){
                 placeholder="e.g., New York, Iowa, Salt Lake City"
                 onChange={(e) => setChildLocation(e.target.value)}/>
             <br></br>
-            <label for="childClothing">What clothing should your child wear?</label>
+            <label htmlFor="childClothing">What clothing should your child wear?</label>
             <input
                 type="text"
                 name="childClothing"
@@ -130,7 +130,7 @@ function StoryForm (){
                 placeholder="e.g., dress, overalls, hat)"
                 onChange={(e) => setChildClothing(e.target.value)}/>
             <br></br>
-            <label for="childInterests">Please list some of your child's interests</label>
+            <label htmlFor="childInterests">Please list some of your child's interests</label>
             <input
                 type="text"
                 name="childInterests"
@@ -138,7 +138,7 @@ function StoryForm (){
                 placeholder="e.g., dinosaurs, princesses, trains"
                 onChange={(e) => setChildInterests(e.target.value)}/>
             <br></br>
-            <label for="storySetting">Where should the story take place?</label>
+            <label htmlFor="storySetting">Where should the story take place?</label>
             <input
                 type="text"
                 name="storySetting"

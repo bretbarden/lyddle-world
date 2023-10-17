@@ -5,6 +5,7 @@
 # Remote library imports
 from flask import jsonify, request, session
 from flask_bcrypt import Bcrypt
+from sqlalchemy.exc import SQLAlchemyError 
 import openai
 
 
@@ -16,17 +17,12 @@ import apikeys
 # Set API key
 openai.api_key = apikeys.openai_apikey
 
-
+# Set up brcrypt for password hashing
 bcrypt = Bcrypt(app)
 
-# Can comment out these since importing from config and models
-# migrate = Migrate(app, db)
-
-# db.init_app(app)
 
 # CHECK THIS: May not need this
 URL_PREFIX = '/api/v1'
-
 
 
 # Helps methods to condense code
@@ -37,7 +33,6 @@ def current_user():
 def authorize():
     if not current_user():
         return {'Message': "No logged in user. You must log in"}, 401
-
 
 
 @app.route('/')
@@ -75,8 +70,6 @@ def create_user():
         # return jsonify(new_story.to_dict()), 201
     except Exception as e:
         return { 'error': str(e) }, 406
-
-
 
 
 
@@ -162,9 +155,36 @@ def logout():
     return {}, 204
 
 
-# Write routes for creating and viewing the stories.
-# need to modify this with the code to send it to OpenAI on post
-# and return 
+
+# # Saving an earlier version of this post in case it breaks
+# @app.post(URL_PREFIX + "/stories")
+# def create_story():
+#     # authorize()
+#     try:
+#         data = request.json
+#         print(data)
+#         # new_story = StoryInput(**data)
+#         new_story = StoryInput(
+#             child_name=data['childName'],
+#             child_age=data['childAge'],
+#             child_race=data['childRace'],
+#             child_hairstyle=data['childHairStyle'],
+#             child_eyecolor=data['childEyeColor'],
+#             child_other_features=data['childOtherFeatures'],
+#             child_location=data['childLocation'],
+#             child_clothing=data['childClothing'],
+#             child_interests=data['childInterests'],
+#             story_setting=data['storySetting']
+#         )
+#         new_story.user_id = current_user().id
+#         print(new_story.to_dict)
+#         db.session.add(new_story)
+#         db.session.commit()
+#         return jsonify( new_story.to_dict() ), 201
+#     except Exception as e:
+#         return jsonify( {'error' : str(e)} ), 406
+    
+    
 
 @app.post(URL_PREFIX + "/stories")
 def create_story():
@@ -186,16 +206,83 @@ def create_story():
             story_setting=data['storySetting']
         )
         new_story.user_id = current_user().id
-        print(new_story.to_dict)
-        db.session.add(new_story)
-        db.session.commit()
 
-        
+        with app.app_context():
+            db.session.add(new_story)
+            db.session.commit()
 
-        return jsonify( new_story.to_dict() ), 201
+            prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
+
+            chatgpt_response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=prompt,
+                max_tokens=3500
+            )
+            generated_text = chatgpt_response.choices[0].text.strip()
+
+            returned_story = ChatGptResponse(
+                full_response=generated_text,
+                storyinput_id=new_story.id
+            )
+            db.session.add(returned_story)
+            db.session.commit()
+
+        return jsonify(new_story.to_dict()), 201
+    except SQLAlchemyError as e:
+        # Handle database-related errors
+        db.session.rollback()  # Roll back the transaction on error
+        return jsonify({'error': str(e)}), 500
     except Exception as e:
-        return jsonify( {'error' : str(e)} ), 406
-    
+        # Handle other exceptions
+        return jsonify({'error': str(e)}), 400
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #     print(new_story.to_dict())
+    #     db.session.add(new_story)
+    #     db.session.commit()
+
+    #     prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incoporating some of the parameters in the dictionary. Please make the story relavent to the child's interests, and have the child overcome some kind of obstacle."
+
+    #     print(prompt)
+    #     chatgpt_response = openai.Completion.create(
+    #         engine="davinci-003",
+    #         prompt=prompt,
+    #         max_tokens=8000
+    #     )
+    #     print(chatgpt_response)
+    #     generated_text = chatgpt_response.choices[0].text.strip()
+    #     print(generated_text)
+
+    #     returned_story = ChatGptResponse(
+    #         full_response = generated_text,
+    #         storyinput_id = new_story.id
+    #     )
+    #     print(returned_story.to_dict())
+    #     db.session.add(returned_story)
+    #     db.session.commit()
+        
+    #     return jsonify( new_story.to_dict() ), 201
+    # except Exception as e:
+    #     return jsonify( {'error' : str(e)} ), 406
     
 
 
