@@ -6,13 +6,50 @@ from config import app, db, api
 from models import User, StoryInput, ChatGptResponse, DallEResponse
 
 
-# Grad the first story input as an example
-def example_input():
-    example = StoryInput.query.filter(StoryInput.id == 1).first()
-    print(example.to_dict())
-    return example
 
-example_input()
+
+
+full_test = "Illustrate this image in the style of digital art smooth. The illustation is for a children's book about a child named Jenna, 13 years old, Native American, with brown eyes, long black hair in a braid, wearing a tanktop (use seed 0 for generating Jenna). The illustation should go with the following text: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be."
+#  style “digital art smooth”
+
+
+#  Solution: Adding faceless as a descriptor to the subject or use the word abstract. Just spend more credits and re-render till you get a good face.
+
+#  Solution: Add more objects or details about the background, such as “next to a tree”, “with the sunset in the background”, “with the universe in the background”. These create complexities in the drawing and forces Dall-E to move away from drawing one big image.
+
+
+# Grab a chatGPTresponse to test out with Dall-E
+
+test_text01 = "Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be."
+
+# prompt="Illustrate this image in the style of digital art smooth. The illustation is for a children's book about a child named Jenna, 13 years old, Native American, with brown eyes, long black hair in a braid, wearing a tanktop (use seed=0 for generating Jenna). The setting is the Florida Keys - please include this in the background and make Jenna take up only about one-tenth of the image. The illustation should go with the following text: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be.",
+
+
+response_dalle = openai.Image.create(
+  prompt="Illustrate this image in the style of digital art smooth. Please make Jenna take up only a small amount of the image, around one-eight of the image size, with the rest being items that fit the following story: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be.",
+  n=1,
+  size="1024x1024"
+)
+image_url = response_dalle['data'][0]['url']
+print(image_url)
+
+
+# "child_age": "13",
+# "child_clothing": "a tank top",
+# "child_eyecolor": "brown",
+# "child_hairstyle": "long black hair in a braid",
+# "child_interests": "sailing",
+# "child_location": "Florida",
+# "child_name": "Jenna",
+# "child_other_features": "",
+# "child_race": "Native American",
+# "id": 16,
+# "story_setting": "the Florida Keys",
+# "user_id": 1
+
+
+
+
 
 
 

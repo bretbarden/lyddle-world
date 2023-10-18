@@ -313,6 +313,18 @@ def chatgpt_responses(id):
         return "No ChatGPT story response found with that id"
 
 
+@app.route("/storyinputs/<int:id>")
+def get_story_by_id(id):
+    story_input = StoryInput.query.filter_by(id=id).first()
+    if story_input:
+        return story_input.to_dict()
+    else:
+        return "No Story Input response found with that id"
+
+
+
+
+
 
 
 
