@@ -7,6 +7,7 @@ from flask import jsonify, request, session
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import SQLAlchemyError 
 import openai
+import re
 
 
 # Local imports
@@ -211,7 +212,10 @@ def create_story():
             db.session.add(new_story)
             db.session.commit()
 
-            prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
+            # Original prompt was not generating the right names
+            # prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
+
+            prompt = f"Please write a 10-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, lives in {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Please include page numbers in your response"
 
             chatgpt_response = openai.Completion.create(
                 engine="text-davinci-003",
@@ -220,9 +224,51 @@ def create_story():
             )
             generated_text = chatgpt_response.choices[0].text.strip()
 
+            # Parse the returned results into pages
+            # Refactor this with loops later - change prompt to have numbering be "01" style
+            sentences = re.split(r'(?<=[.!?])\s+', generated_text)
+
+            page01_index = sentences.index("Page 1")
+            page02_index = sentences.index("Page 2")
+            page03_index = sentences.index("Page 3")
+            page04_index = sentences.index("Page 4")
+            page05_index = sentences.index("Page 5")
+            page06_index = sentences.index("Page 6")
+            page07_index = sentences.index("Page 7")
+            page08_index = sentences.index("Page 8")
+            page09_index = sentences.index("Page 9")
+            page10_index = sentences.index("Page 10")
+
+            page01_sentences = sentences[page01_index + 1:page02_index]
+            page02_sentences = sentences[page02_index + 1:page03_index]
+            page03_sentences = sentences[page03_index + 1:page04_index]
+            page04_sentences = sentences[page04_index + 1:page05_index]
+            page05_sentences = sentences[page05_index + 1:page06_index]
+            page06_sentences = sentences[page06_index + 1:page07_index]
+            page07_sentences = sentences[page07_index + 1:page08_index]
+            page08_sentences = sentences[page08_index + 1:page09_index]
+            page09_sentences = sentences[page08_index + 1:page10_index]
+            page10_sentences = sentences[page10_index:]
+
+            page01_text = "".join(page01_sentences)
+            page02_text = "".join(page02_sentences)
+            page03_text = "".join(page03_sentences)
+            page04_text = "".join(page04_sentences)
+            page05_text = "".join(page05_sentences)
+            page06_text = "".join(page06_sentences)
+            page07_text = "".join(page07_sentences)
+            page08_text = "".join(page08_sentences)
+            page09_text = "".join(page09_sentences)
+            page10_text = "".join(page10_sentences)
+
+
+
+
+
+
             returned_story = ChatGptResponse(
                 full_response=generated_text,
-                storyinput_id=new_story.id
+                storyinput_id=new_story.id,
             )
             db.session.add(returned_story)
             db.session.commit()
@@ -243,8 +289,14 @@ def create_story():
 
 
 
-
-
+# Route to check responses
+@app.route("/checkresponse")
+def storycheck():
+    storyresponse = ChatGptResponse.query.filter_by(id=2).first()
+    if storyresponse:
+        return "The story response ID from ChaptGPT is {} and the text is is {}".format(storyresponse.id, storyresponse.full_response)
+    else:
+        return "No story response found with that id"
 
 
 
