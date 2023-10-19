@@ -74,10 +74,6 @@ class ChatGptResponse (db.Model, SerializerMixin):
     page04_text = db.Column(db.String, nullable=True)
     page05_text = db.Column(db.String, nullable=True)
     page06_text = db.Column(db.String, nullable=True)
-    # page07_text = db.Column(db.String, nullable=True)
-    # page08_text = db.Column(db.String, nullable=True)
-    # page09_text = db.Column(db.String, nullable=True)
-    # page10_text = db.Column(db.String, nullable=True)
     # back_cover = db.Column(db.String, nullable=True)
     page01_dalleprompt = db.Column(db.String, nullable=True)
     page02_dalleprompt = db.Column(db.String, nullable=True)
@@ -105,11 +101,7 @@ class DallEResponse (db.Model, SerializerMixin):
     page04_imageurl = db.Column(db.String, nullable=True)
     page05_imageurl = db.Column(db.String, nullable=True)
     page06_imageurl = db.Column(db.String, nullable=True)
-    # page07_imageurl = db.Column(db.String, nullable=True)
-    # page08_imageurl = db.Column(db.String, nullable=True)
-    # page09_imageurl = db.Column(db.String, nullable=True)
-    # page10_imageurl = db.Column(db.String, nullable=True)
-    
+
     storyinput_id = db.Column(db.Integer, db.ForeignKey('story_inputs.id'), nullable=False)
 
     storyinput = db.relationship('StoryInput', back_populates='dalleresponses')

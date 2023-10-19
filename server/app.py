@@ -216,12 +216,12 @@ def create_story():
             # Original prompt was not generating the right names
             # prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
 
-            prompt = f"Please write a 6-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page. After each story page, please include Dall-E prompts for each page, with each description beginning with 'Dalle-E 01' for instance, corresponding to the page. In each Dall-E prompt, include 1) a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, 2) explicitly state that {new_story.child_name} should take up only a small amount of the image, around one-eight of the image size, 3) explicitly state that the style should be a digital art illustration, 4) all people should be faceless, and 5) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Jenna, a 13-year-old girl with a determined demeanor. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
+            prompt = f"Please write a 6-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page. After each story page, please include Dall-E prompts for each page, with each description beginning with 'Dalle-E 01' for instance, corresponding to the page. In each Dall-E prompt, include (1) a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2) explicitly state that people should take up only a small amount of the image, around one-eight of the image size, with detailed description of the background (3) explicitly state that the style should be a digital art illustration, (4) explicitly state that all people should be faceless, and (5) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Jenna, a 13-year-old girl with a determined demeanor. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
 
             chatgpt_response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
-                max_tokens=3500
+                max_tokens=3200
             )
             generated_text = chatgpt_response.choices[0].text.strip()
             print(f'This is a print of generated_text: {generated_text}')
@@ -297,8 +297,77 @@ def create_story():
                 page05_dalleprompt=page05_dalleprompt,
                 page06_dalleprompt=page06_dalleprompt
             )
+            # Commenting this out to add the story before the illustrations
+            # db.session.add(returned_story)
+            # db.session.commit()
+
             db.session.add(returned_story)
             db.session.commit()
+
+            response_dalle01 = openai.Image.create(
+            prompt=f'{page01_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page01_imageurl = response_dalle01['data'][0]['url']
+            print(page01_imageurl)
+
+            response_dalle02 = openai.Image.create(
+            prompt=f'{page02_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page02_imageurl = response_dalle02['data'][0]['url']
+            print(page02_imageurl)
+
+            response_dalle03 = openai.Image.create(
+            prompt=f'{page03_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page03_imageurl = response_dalle03['data'][0]['url']
+            print(page03_imageurl)
+
+
+            response_dalle04 = openai.Image.create(
+            prompt=f'{page04_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page04_imageurl = response_dalle04['data'][0]['url']
+            print(page04_imageurl)
+
+            response_dalle05 = openai.Image.create(
+            prompt=f'{page05_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page05_imageurl = response_dalle05['data'][0]['url']
+            print(page05_imageurl)
+
+            response_dalle06 = openai.Image.create(
+            prompt=f'{page06_dalleprompt}',
+            n=1,
+            size="1024x1024"
+            )
+            page06_imageurl = response_dalle06['data'][0]['url']
+            print(page06_imageurl)
+
+
+            returned_illustrations= DallEResponse(
+                storyinput_id=new_story.id,
+                page01_imageurl=page01_imageurl,
+                page02_imageurl=page02_imageurl,
+                page03_imageurl=page03_imageurl,
+                page04_imageurl=page04_imageurl,
+                page05_imageurl=page05_imageurl,
+                page06_imageurl=page06_imageurl,
+            )
+
+
+            db.session.add(returned_illustrations)
+            db.session.commit()
+
 
         return jsonify(new_story.to_dict()), 201
     except SQLAlchemyError as e:

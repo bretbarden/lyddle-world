@@ -103,7 +103,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1> Login or Signup  </h1>
+      <h1> ✨📚✨ Lyddle Books ✨📚✨</h1>
         <Header />
         <Outlet />
         {/* TO UPDATE: REPLACE BELOW WITH SEPARATE SIGNUP AND LOGIN */}
