@@ -19,9 +19,10 @@ function StoryForm (){
     const [childName, setChildName] = useState("")
     const [childAge, setChildAge] = useState(0)
     const [childRace, setChildRace] = useState("")
+    const [childPronouns, setChildPronouns] = useState("")
     const [childHairStyle, setChildHairStyle] = useState("")
-    const [childEyeColor, setChildEyeColor] = useState("")
-    const [childOtherFeatures, setChildOtherFeatures] = useState("")
+    // const [childEyeColor, setChildEyeColor] = useState("")
+    // const [childOtherFeatures, setChildOtherFeatures] = useState("")
     const [childLocation, setChildLocation] = useState("")
     const [childClothing, setChildClothing] = useState("")
     const [childInterests, setChildInterests] = useState("")
@@ -43,10 +44,11 @@ function StoryForm (){
     function handleSubmit(e){
         e.preventDefault()
 
-        let newStoryInput = {childName, childAge, childRace, childHairStyle, childEyeColor, 
-            childOtherFeatures, childLocation, childClothing, childInterests, storySetting}
+        // Changing features to get rid of eyes and other features
+        // let newStoryInput = {childName, childAge, childRace, childHairStyle, childEyeColor, childOtherFeatures, childLocation, childClothing, childInterests, storySetting}
 
-        
+        let newStoryInput = {childName, childAge, childPronouns, childRace, childHairStyle, childLocation, childClothing, childInterests, storySetting}
+
         fetch(URL + '/stories', {
             method: "POST",
             headers: POST_HEADERS,
@@ -71,7 +73,7 @@ function StoryForm (){
                 type="text"
                 name="childName"
                 value={childName}
-                placeholder="e.g. Akeelah, Daphne, Jorge"
+                placeholder="Akeelah, Jorge..."
                 onChange={(e) => setChildName(e.target.value)}/>
             <br></br>
             <label htmlFor="childAge">Age</label>
@@ -79,15 +81,23 @@ function StoryForm (){
                 type="text"
                 name="childAge"
                 value={childAge}
-                placeholder="0"
+                placeholder="5, 7"
                 onChange={(e) => setChildAge(e.target.value)}/>
+            <br></br>
+            <label htmlFor="childPronouns">Pronouns</label>
+            <input
+                type="text"
+                name="childPronouns"
+                value={childPronouns}
+                placeholder="she, they, he..."
+                onChange={(e) => setChildPronouns(e.target.value)}/>
             <br></br>
             <label htmlFor="childRace">Race</label>
             <input
                 type="text"
                 name="childRace"
                 value={childRace}
-                placeholder="Black, Asian, Hispanic or Latino, etc."
+                placeholder="Black, Asian, Hispanic/Latino..."
                 onChange={(e) => setChildRace(e.target.value)}/>
             <br></br>
             <label htmlFor="childHairStyle">Hair Style</label>
@@ -95,31 +105,31 @@ function StoryForm (){
                 type="text"
                 name="childHairStyle"
                 value={childHairStyle}
-                placeholder="e.g., wavy and down to shoulders, buzz cut"
+                placeholder="wavy long black hair..."
                 onChange={(e) => setChildHairStyle(e.target.value)}/>
            <br></br>
-           <label htmlFor="childEyeColor">Eye Color</label>
+           {/* <label htmlFor="childEyeColor">Eye Color</label>
            <input
                 type="text"
                 name="childEyeColor"
                 value={childEyeColor}
                 placeholder="e.g., brown, green, blue, hazel"
                 onChange={(e) => setChildEyeColor(e.target.value)}/>
-            <br></br>
-            <label htmlFor="childOtherFeatures">Other features?</label>
+            <br></br> */}
+            {/* <label htmlFor="childOtherFeatures">Other features?</label>
             <input
                 type="text"
                 name="childOtherFeatures"
                 value={childOtherFeatures}
                 placeholder="e.g., birthmark on right cheek, uses a wheelchair"
                 onChange={(e) => setChildOtherFeatures(e.target.value)}/>
-            <br></br>
+            <br></br> */}
             <label htmlFor="childLocation">Where does your child live?</label>
             <input
                 type="text"
                 name="childLocation"
                 value={childLocation}
-                placeholder="e.g., New York, Iowa, Salt Lake City"
+                placeholder="Queens, Indonesia..."
                 onChange={(e) => setChildLocation(e.target.value)}/>
             <br></br>
             <label htmlFor="childClothing">What clothing should your child wear?</label>
@@ -127,7 +137,7 @@ function StoryForm (){
                 type="text"
                 name="childClothing"
                 value={childClothing}
-                placeholder="e.g., dress, overalls, hat)"
+                placeholder="green dress, blue overalls...)"
                 onChange={(e) => setChildClothing(e.target.value)}/>
             <br></br>
             <label htmlFor="childInterests">Please list some of your child's interests</label>
@@ -135,7 +145,7 @@ function StoryForm (){
                 type="text"
                 name="childInterests"
                 value={childInterests}
-                placeholder="e.g., dinosaurs, princesses, trains"
+                placeholder="dinosaurs, trains..."
                 onChange={(e) => setChildInterests(e.target.value)}/>
             <br></br>
             <label htmlFor="storySetting">Where should the story take place?</label>
@@ -143,7 +153,7 @@ function StoryForm (){
                 type="text"
                 name="storySetting"
                 value={storySetting}
-                placeholder="e.g., the mountains, space, the time of dinosaurs"
+                placeholder="a park, the mountains, space..."
                 onChange={(e) => setStorySetting(e.target.value)}/>
             <br></br>
 
