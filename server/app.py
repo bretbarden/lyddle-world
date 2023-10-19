@@ -215,12 +215,12 @@ def create_story():
             # Original prompt was not generating the right names
             # prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
 
-            prompt = f"Please write a 10-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, lives in {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Please include page numbers in your response"
+            prompt = f"Please write a 10-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, lives in {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Please include page numbers in your response. After the story, please include Dall-E prompts for each of the pages, with each description beginning with 'Image 1' for instance, corresponding to a page. In each Dall-E prompt, include 1) a description of {new_story.child_name}: a child aged {new_story.child_age}, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, 2) explicitly state that {new_story.child_name} should take up only a small amount of the image, around one-eight of the image size, 3) explicitly state that the style should be a digital art illustration, 4) all people should be faceless, and 5) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Jenna, a 13-year-old girl with a determined demeanor. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
 
             chatgpt_response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
-                max_tokens=3500
+                max_tokens=3000
             )
             generated_text = chatgpt_response.choices[0].text.strip()
             print(f'This is a print of generated_text: {generated_text}')
@@ -290,29 +290,6 @@ def create_story():
 
 
 
-
-
-
-# Route to check Chat GPT responses
-@app.route("/chatgptresponses/<int:id>")
-def chatgpt_responses(id):
-    chatgpt_response = ChatGptResponse.query.filter_by(id=id).first()
-    if chatgpt_response:
-        return f'''The story response ID from ChaptGPT is: <br>
-        {chatgpt_response.id} <br>
-        <br>
-        and the text is is {chatgpt_response.full_response} <br>
-        <br>
-        Page 1: <br>
-        {chatgpt_response.page01_text}<br><br>
-        Page 2: <br>
-        {chatgpt_response.page02_text}<br><br>
-
-        '''
-    else:
-        return "No ChatGPT story response found with that id"
-
-
 @app.route("/storyinputs/<int:id>")
 def get_story_by_id(id):
     story_input = StoryInput.query.filter_by(id=id).first()
@@ -320,6 +297,19 @@ def get_story_by_id(id):
         return story_input.to_dict()
     else:
         return "No Story Input response found with that id"
+
+
+
+# Route to check Chat GPT responses
+@app.route("/chatgptresponses/<int:id>")
+def chatgpt_responses_by_id(id):
+    chatgpt_response = ChatGptResponse.query.filter_by(id=id).first()
+    if chatgpt_response:
+        return chatgpt_response.to_dict()
+    else:
+        return "No ChatGPT story response found with that id"
+
+
 
 
 
