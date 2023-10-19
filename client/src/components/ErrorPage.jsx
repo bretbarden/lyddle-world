@@ -4,7 +4,7 @@ function ErrorPage (){
 
     return(
 
-        <h1> Error: I am an error page. Fix me later </h1>
+        <h1> Error: Page Not Found</h1>
     )
 }
 

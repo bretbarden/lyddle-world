@@ -1,73 +1,54 @@
-import React, {useState} from "react";
-import { useNavigate } from 'react-router-dom'
-
-
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import lyddleImage from '../assets/Lyddle.png';
 
 const POST_HEADERS = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
-  
-const URL = "/api/v1"
+}
 
+const URL = "/api/v1";
 
+function StoryForm() {
 
-function StoryForm (){
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const navigate = useNavigate()
+    const [childName, setChildName] = useState("");
+    const [childAge, setChildAge] = useState(0);
+    const [childRace, setChildRace] = useState("");
+    const [childPronouns, setChildPronouns] = useState("");
+    const [childHairStyle, setChildHairStyle] = useState("");
+    const [childLocation, setChildLocation] = useState("");
+    const [childClothing, setChildClothing] = useState("");
+    const [childInterests, setChildInterests] = useState("");
+    const [storySetting, setStorySetting] = useState("");
 
-    const [childName, setChildName] = useState("")
-    const [childAge, setChildAge] = useState(0)
-    const [childRace, setChildRace] = useState("")
-    const [childPronouns, setChildPronouns] = useState("")
-    const [childHairStyle, setChildHairStyle] = useState("")
-    // const [childEyeColor, setChildEyeColor] = useState("")
-    // const [childOtherFeatures, setChildOtherFeatures] = useState("")
-    const [childLocation, setChildLocation] = useState("")
-    const [childClothing, setChildClothing] = useState("")
-    const [childInterests, setChildInterests] = useState("")
-    const [storySetting, setStorySetting] = useState("")
+    function handleSubmit(e) {
+        e.preventDefault();
+        setIsLoading(true);
 
-    // Leaving this here for now, but going with inline functions on form
-    // const handleChangeChildName = e => setChildName(e.target.value)
-    // const handleChangeChildAge = e => setChildAge(e.target.value)
-    // const handleChangeChildRace = e => setChildRace(e.target.value)
-    // const handleChangeChildHairStyle = e => setChildHairStyle(e.target.value)
-    // const handleChangeChildEyeColor = e => setChildEyeColor(e.target.value)
-    // const handleChangeChildOtherFeatures = e => setChildOtherFeatures(e.target.value)
-    // const handleChangeChildLocation = e => setChildLocation(e.target.value)
-    // const handleChangeChildClothing = e => setChildClothing(e.target.value)
-    // const handleChangeChildInterests = e => setChildInterests(e.target.value)
-    // const handleChangeStorySetting = e => setStorySetting(e.target.value)
-
-
-    function handleSubmit(e){
-        e.preventDefault()
-
-        // Changing features to get rid of eyes and other features
-        // let newStoryInput = {childName, childAge, childRace, childHairStyle, childEyeColor, childOtherFeatures, childLocation, childClothing, childInterests, storySetting}
-
-        let newStoryInput = {childName, childAge, childPronouns, childRace, childHairStyle, childLocation, childClothing, childInterests, storySetting}
+        let newStoryInput = { childName, childAge, childPronouns, childRace, childHairStyle, childLocation, childClothing, childInterests, storySetting };
 
         fetch(URL + '/stories', {
             method: "POST",
             headers: POST_HEADERS,
             body: JSON.stringify(newStoryInput)
         })
-        .then( ()=> navigate('/storyreturn'))
-        // TO UPDATE: Add error handling on the post here
-        // Need to make sure that the backend has time to process, 
-        // so may need a loading page here while it generates, 
-        // or maybe a page saying that the story submission 
-        // was a success
+            .then(() => {
+                setIsLoading(false);
+                navigate('/storyreturn');
+            })
+            // Add error handling here, and make sure to set isLoading to false in case of an error
     }
 
+    if (isLoading) {
+        return <StoryLoading />;
+    }
 
-
-
- return (
-    <div>
-        <form onSubmit={handleSubmit}>
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
             <label htmlFor="childName">Name</label>
             <input
                 type="text"
@@ -159,8 +140,19 @@ function StoryForm (){
 
             <button type="submit">Create Story</button>
         </form>
-    </div>
- )   
+        </div>
+    );
+}
+
+function StoryLoading() {
+    return (
+        <div>
+            <h2> 🌈 Writing your story! </h2>
+            <h3> 🖋️ Crafting perfect prose... </h3>
+            <h3> 🎨 Illustrating magical memories... </h3>
+            <img src={lyddleImage} alt="Lydia"  style={{ width: '30%', height: 'auto' }}/>
+        </div>
+    );
 }
 
 export default StoryForm;

@@ -103,7 +103,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1> ✨📚✨ Lyddle Books ✨📚✨</h1>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <h1> ✨📚 Lyddle Books 📚✨</h1>
+      </div>
+      <div>
         <Header />
         <Outlet />
         {/* TO UPDATE: REPLACE BELOW WITH SEPARATE SIGNUP AND LOGIN */}
@@ -112,8 +115,7 @@ function App() {
         attemptLogin={attemptLogin}
         attemptSignup={attemptSignup}
         logout={logout} />
-       
-
+      </div>
     </div>
   )
 }

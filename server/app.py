@@ -5,7 +5,8 @@
 # Remote library imports
 from flask import jsonify, request, session
 from flask_bcrypt import Bcrypt
-from sqlalchemy.exc import SQLAlchemyError 
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 import openai
 import re
 
@@ -216,12 +217,12 @@ def create_story():
             # Original prompt was not generating the right names
             # prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
 
-            prompt = f"Please write a 6-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page. After each story page, please include Dall-E prompts for each page, with each description beginning with 'Dalle-E 01' for instance, corresponding to the page. In each Dall-E prompt, include (1) a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2) explicitly state that people should take up only a small amount of the image, around one-eight of the image size, with detailed description of the background (3) explicitly state that the style should be a digital art illustration, (4) explicitly state that all people should be faceless, and (5) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Jenna, a 13-year-old girl with a determined demeanor. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
+            prompt = f"Please write a 6-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Do not use quotations in any of the response you provide. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page. After each story page, please include Dall-E prompts for each page, with each description beginning with 'Dalle-E 01' for instance, corresponding to the page. Each Dall-E prompt MUST incorporate the following five points of guidance: (1) MUST INCLUDE a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2)  MUST EXPLICTLY DESCRIBE the background, with any people depicted being around only one-eight the size of the total image (3) MUST EXPLICITLY STATE that all people in the image should be faceless, (4) MUST EXPLICITLY STATE that the style should be a digital art illustration, and (5) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Lydia, a 13-year-old Asian girl with straight black hair down to her shoulders wearing a green dress. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
 
             chatgpt_response = openai.Completion.create(
                 engine="text-davinci-003",
                 prompt=prompt,
-                max_tokens=3200
+                max_tokens=3500
             )
             generated_text = chatgpt_response.choices[0].text.strip()
             print(f'This is a print of generated_text: {generated_text}')
@@ -304,8 +305,17 @@ def create_story():
             db.session.add(returned_story)
             db.session.commit()
 
+            dalle_mainprompt = "All people should be faceless. Any people should be around one-eigth the size fo the image. Style should be like Claude Monet."
+
+            # Things to try:
+            # Claude Monet
+            # Leonid Afremov
+            # Caspar David Friedrich, Wanderer above the Sea of Fog
+            # Georges Seurat, A Sunday Afternoon on the Island of La Grande Jatte
+
+
             response_dalle01 = openai.Image.create(
-            prompt=f'{page01_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page01_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -313,7 +323,7 @@ def create_story():
             print(page01_imageurl)
 
             response_dalle02 = openai.Image.create(
-            prompt=f'{page02_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page02_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -321,7 +331,7 @@ def create_story():
             print(page02_imageurl)
 
             response_dalle03 = openai.Image.create(
-            prompt=f'{page03_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page03_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -330,7 +340,7 @@ def create_story():
 
 
             response_dalle04 = openai.Image.create(
-            prompt=f'{page04_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page04_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -338,7 +348,7 @@ def create_story():
             print(page04_imageurl)
 
             response_dalle05 = openai.Image.create(
-            prompt=f'{page05_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page05_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -346,7 +356,7 @@ def create_story():
             print(page05_imageurl)
 
             response_dalle06 = openai.Image.create(
-            prompt=f'{page06_dalleprompt}',
+            prompt=f'{dalle_mainprompt}{page06_dalleprompt}',
             n=1,
             size="1024x1024"
             )
@@ -381,7 +391,6 @@ def create_story():
 
 
 
-
 @app.route("/storyinputs/<int:id>")
 def get_story_by_id(id):
     story_input = StoryInput.query.filter_by(id=id).first()
@@ -401,50 +410,44 @@ def chatgpt_responses_by_id(id):
     else:
         return "No ChatGPT story response found with that id"
 
+# Route to check Dall-E responses
+@app.route("/dalleresponses/<int:id>")
+def dalle_responses_by_id(id):
+    dalle_response = DallEResponse.query.filter_by(id=id).first()
+    if dalle_response:
+        return dalle_response.to_dict()
+    else:
+        return "No Dall-E story response found with that id"
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #     print(new_story.to_dict())
-    #     db.session.add(new_story)
-    #     db.session.commit()
-
-    #     prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incoporating some of the parameters in the dictionary. Please make the story relavent to the child's interests, and have the child overcome some kind of obstacle."
-
-    #     print(prompt)
-    #     chatgpt_response = openai.Completion.create(
-    #         engine="davinci-003",
-    #         prompt=prompt,
-    #         max_tokens=8000
-    #     )
-    #     print(chatgpt_response)
-    #     generated_text = chatgpt_response.choices[0].text.strip()
-    #     print(generated_text)
-
-    #     returned_story = ChatGptResponse(
-    #         full_response = generated_text,
-    #         storyinput_id = new_story.id
-    #     )
-    #     print(returned_story.to_dict())
-    #     db.session.add(returned_story)
-    #     db.session.commit()
-        
-    #     return jsonify( new_story.to_dict() ), 201
-    # except Exception as e:
-    #     return jsonify( {'error' : str(e)} ), 406
     
+
+@app.route('/getlaststory', methods=['GET'])
+def get_laststory():
+    session = Session()
+
+    laststoryid = session.query(StoryInput).order_by(StoryInput.id.desc()).first()
+
+    print(laststoryid)
+    chatgpt_response = ChatGptResponse.query.filter_by(storyinput_id=laststoryid).first()
+    dalle_response = DallEResponse.query.filter_by(storyinput_id=laststoryid).first()
+
+    if not chatgpt_response or not dalle_response:
+        return jsonify({"error": "Data not found"}), 404
+
+    chatgpt_data = chatgpt_response.to_dict()
+    dalle_data = dalle_response.to_dict()
+
+    combined_data = {
+        "title_text": chatgpt_data.get("title_text"),
+        "pages": [
+            {"text": chatgpt_data.get(f"page{i+1}_text"), "imageurl": dalle_data.get(f"page{i+1}_imageurl")}
+            for i in range(6)
+        ]
+    }
+
+    return jsonify(combined_data)
 
 
 
