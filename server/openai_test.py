@@ -25,8 +25,21 @@ test_text01 = "Jenna was a 13 year-old girl who lived in Florida. She loved the 
 # prompt="Illustrate this image in the style of digital art smooth. The illustation is for a children's book about a child named Jenna, 13 years old, Native American, with brown eyes, long black hair in a braid, wearing a tanktop (use seed=0 for generating Jenna). The setting is the Florida Keys - please include this in the background and make Jenna take up only about one-tenth of the image. The illustation should go with the following text: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be.",
 
 
+# Illustrate this image in the style of digital art smooth. Please make Jenna take up only a small amount of the image, around one-eight of the image size, with the rest being items that fit the following story: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be.
+
+
+
+# Suggestions based on Chat-GPT
+# "Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Jenna, a 13-year-old girl with a determined look on her face. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor."
+
+# "Digital art depiction of a vast ocean with the sun reflecting on its surface. On the far left, Jenna, a 13-year-old girl, stands looking out at the sea, taking up approximately one-eighth of the image. Nearby, there's a sailboat with white sails catching the wind, conveying the thrill and excitement of sailing. The horizon is clear blue, symbolizing Jenna's endless possibilities as a sailor."
+
+# "Smooth digital art showcasing a coastal scene from Florida. In the bottom right corner, Jenna, a young 13-year-old, is seen holding a miniature sailboat, representing her dreams. The majority of the image is filled with a beautiful seascape: white sails of distant boats billow in the wind, the sun casts a golden hue on the sand, and the waves gently touch the shoreline."
+
+# "Digital art of a picturesque Florida setting with a focus on sailing. In a small section, Jenna, a 13-year-old girl with a passion for sailing, is depicted holding a compass or a map, symbolizing her determination. The rest of the image is dominated by the vast sea, with several sailboats, their white sails full from the wind, racing towards the blue horizon. The ambiance should evoke a sense of adventure and aspiration."
+
 response_dalle = openai.Image.create(
-  prompt="Illustrate this image in the style of digital art smooth. Please make Jenna take up only a small amount of the image, around one-eight of the image size, with the rest being items that fit the following story: Jenna was a 13 year-old girl who lived in Florida. She loved the sunshine, the sea, and the sand. But what she loved most of all was sailing. When she caught the wind, white sails billowing, and saw the blue horizon ahead of her, she felt alive with excitement. Jenna was determined to be the best sailor she could possibly be.",
+  prompt="Digital art of a picturesque Florida setting with a focus on sailing. In a small section, Jenna, a 13-year-old girl with a passion for sailing, is depicted holding a compass or a map, symbolizing her determination. The rest of the image is dominated by the vast sea, with several sailboats, their white sails full from the wind, racing towards the blue horizon. The ambiance should evoke a sense of adventure and aspiration.",
   n=1,
   size="1024x1024"
 )
