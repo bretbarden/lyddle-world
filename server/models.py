@@ -40,10 +40,11 @@ class StoryInput (db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     child_name = db.Column(db.String, nullable=False)
     child_age = db.Column(db.String, nullable = False)
+    child_pronouns = db.Column(db.String, nullable = False)
     child_race = db.Column(db.String, nullable=False)
     child_hairstyle = db.Column(db.String, nullable=False)
-    child_eyecolor = db.Column(db.String, nullable=False)
-    child_other_features = db.Column(db.String, nullable=False)
+    # child_eyecolor = db.Column(db.String, nullable=False)
+    # child_other_features = db.Column(db.String, nullable=False)
     child_location = db.Column(db.String, nullable=False)
     child_clothing = db.Column(db.String, nullable=False)
     child_interests = db.Column(db.String, nullable=False)
@@ -65,19 +66,25 @@ class ChatGptResponse (db.Model, SerializerMixin):
     __tablename__ = "chatgpt_responses"
     id = db.Column(db.Integer, primary_key=True)
     full_response = db.Column(db.String, nullable=False)
-    front_cover = db.Column(db.String, nullable=True)
-    title_page = db.Column(db.String, nullable=True)
+    # front_cover = db.Column(db.String, nullable=True)
+    title_text = db.Column(db.String, nullable=True)
     page01_text = db.Column(db.String, nullable=True)
     page02_text = db.Column(db.String, nullable=True)
     page03_text = db.Column(db.String, nullable=True)
     page04_text = db.Column(db.String, nullable=True)
     page05_text = db.Column(db.String, nullable=True)
     page06_text = db.Column(db.String, nullable=True)
-    page07_text = db.Column(db.String, nullable=True)
-    page08_text = db.Column(db.String, nullable=True)
-    page09_text = db.Column(db.String, nullable=True)
-    page10_text = db.Column(db.String, nullable=True)
-    back_cover = db.Column(db.String, nullable=True)
+    # page07_text = db.Column(db.String, nullable=True)
+    # page08_text = db.Column(db.String, nullable=True)
+    # page09_text = db.Column(db.String, nullable=True)
+    # page10_text = db.Column(db.String, nullable=True)
+    # back_cover = db.Column(db.String, nullable=True)
+    page01_dalleprompt = db.Column(db.String, nullable=True)
+    page02_dalleprompt = db.Column(db.String, nullable=True)
+    page03_dalleprompt = db.Column(db.String, nullable=True)
+    page04_dalleprompt = db.Column(db.String, nullable=True)
+    page05_dalleprompt = db.Column(db.String, nullable=True)
+    page06_dalleprompt = db.Column(db.String, nullable=True)
 
     storyinput_id = db.Column(db.Integer, db.ForeignKey('story_inputs.id'), nullable=False)
 
@@ -91,17 +98,17 @@ class ChatGptResponse (db.Model, SerializerMixin):
 class DallEResponse (db.Model, SerializerMixin):
     __tablename__ = "dalle_responses"
     id = db.Column(db.Integer, primary_key=True)
-    front_cover_imageurl = db.Column(db.String, nullable=True)
+    # front_cover_imageurl = db.Column(db.String, nullable=True)
     page01_imageurl = db.Column(db.String, nullable=True)
     page02_imageurl = db.Column(db.String, nullable=True)
     page03_imageurl = db.Column(db.String, nullable=True)
     page04_imageurl = db.Column(db.String, nullable=True)
     page05_imageurl = db.Column(db.String, nullable=True)
     page06_imageurl = db.Column(db.String, nullable=True)
-    page07_imageurl = db.Column(db.String, nullable=True)
-    page08_imageurl = db.Column(db.String, nullable=True)
-    page09_imageurl = db.Column(db.String, nullable=True)
-    page10_imageurl = db.Column(db.String, nullable=True)
+    # page07_imageurl = db.Column(db.String, nullable=True)
+    # page08_imageurl = db.Column(db.String, nullable=True)
+    # page09_imageurl = db.Column(db.String, nullable=True)
+    # page10_imageurl = db.Column(db.String, nullable=True)
     
     storyinput_id = db.Column(db.Integer, db.ForeignKey('story_inputs.id'), nullable=False)
 
@@ -109,10 +116,4 @@ class DallEResponse (db.Model, SerializerMixin):
 
     serialize_rules = ('-storyinput',)
 
-
-
-
-# class StoryFinal (db.Model, SerializerMixin):
-#     opening_page (standard, about company)
-#     back_cover (standard, gene
 
