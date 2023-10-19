@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "435fd18fc194be95274aa5c13f7def9509bb24e78d2cc2a85684694463c80894"
+            "sha256": "133aef21d04eb75af1d81890ce9f1765fdd0c47db3e9eea5c4e28117df5cfca7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -334,11 +334,11 @@
         },
         "faker": {
             "hashes": [
-                "sha256:63da90512d0cb3acdb71bd833bb3071cb8a196020d08b8567a01d232954f1820",
-                "sha256:f321e657ed61616fbfe14dbb9ccc6b2e8282652bbcfcb503c1bd0231ff834df6"
+                "sha256:a62a3fd3bfa3122d4f57dfa26a1cc37d76751a76c8ddd63cf9d24078c57913a4",
+                "sha256:e28090068293c5a83e7f4d636417d45fae1031ca8a8136cc2415549ebc2111e2"
             ],
             "index": "pypi",
-            "version": "==19.10.0"
+            "version": "==19.11.0"
         },
         "flask": {
             "hashes": [
@@ -679,6 +679,13 @@
             "markers": "python_version >= '3.5'",
             "version": "==0.1.6"
         },
+        "midjourney-api": {
+            "hashes": [
+                "sha256:b02f71d78895b910445a9800eefb84836f72ab3aa1e60ea780aeac12fa507b14"
+            ],
+            "index": "pypi",
+            "version": "==1.0.7"
+        },
         "multidict": {
             "hashes": [
                 "sha256:01a3a55bd90018c9c080fbb0b9f4891db37d148a0a18722b42f94694f8b6d4c9",
@@ -954,11 +961,11 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:7a7c7003b000adf9e7ca2a377c9688bbc54ed41b985789ed576570342a375cd2",
-                "sha256:b19e1a85d206b56d7df1d5e683df4a7725252a964e3993648dd0fb5a1c157564"
+                "sha256:c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84",
+                "sha256:fdb6d215c776278489906c2f8916e6e7d4f5a9b602ccbcfdf7f016fc8da0596e"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==2.0.6"
+            "version": "==2.0.7"
         },
         "wcwidth": {
             "hashes": [

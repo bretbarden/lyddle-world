@@ -1,0 +1,10 @@
+
+
+ style “digital art smooth”
+
+
+
+ Solution: Adding faceless as a descriptor to the subject or use the word abstract. Just spend more credits and re-render till you get a good face.
+
+ Solution: Add more objects or details about the background, such as “next to a tree”, “with the sunset in the background”, “with the universe in the background”. These create complexities in the drawing and forces Dall-E to move away from drawing one big image.
+

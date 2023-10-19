@@ -223,52 +223,56 @@ def create_story():
                 max_tokens=3500
             )
             generated_text = chatgpt_response.choices[0].text.strip()
+            print(f'This is a print of generated_text: {generated_text}')
 
             # Parse the returned results into pages
             # Refactor this with loops later - change prompt to have numbering be "01" style
-            sentences = re.split(r'(?<=[.!?])\s+', generated_text)
-
-            page01_index = sentences.index("Page 1")
-            page02_index = sentences.index("Page 2")
-            page03_index = sentences.index("Page 3")
-            page04_index = sentences.index("Page 4")
-            page05_index = sentences.index("Page 5")
-            page06_index = sentences.index("Page 6")
-            page07_index = sentences.index("Page 7")
-            page08_index = sentences.index("Page 8")
-            page09_index = sentences.index("Page 9")
-            page10_index = sentences.index("Page 10")
-
-            page01_sentences = sentences[page01_index + 1:page02_index]
-            page02_sentences = sentences[page02_index + 1:page03_index]
-            page03_sentences = sentences[page03_index + 1:page04_index]
-            page04_sentences = sentences[page04_index + 1:page05_index]
-            page05_sentences = sentences[page05_index + 1:page06_index]
-            page06_sentences = sentences[page06_index + 1:page07_index]
-            page07_sentences = sentences[page07_index + 1:page08_index]
-            page08_sentences = sentences[page08_index + 1:page09_index]
-            page09_sentences = sentences[page08_index + 1:page10_index]
-            page10_sentences = sentences[page10_index:]
-
-            page01_text = "".join(page01_sentences)
-            page02_text = "".join(page02_sentences)
-            page03_text = "".join(page03_sentences)
-            page04_text = "".join(page04_sentences)
-            page05_text = "".join(page05_sentences)
-            page06_text = "".join(page06_sentences)
-            page07_text = "".join(page07_sentences)
-            page08_text = "".join(page08_sentences)
-            page09_text = "".join(page09_sentences)
-            page10_text = "".join(page10_sentences)
+            # Commenting out the regular expressions to see if it will work without them since they appear to be messing with the way that pages are parsed
+            # sentences = re.split(r'(?<=[.!?])\s+', generated_text)
 
 
+            page01_index = generated_text.index("Page 1")
+            print(f'This is a print of page01_index: {page01_index}')
+            page02_index = generated_text.index("Page 2")
+            page03_index = generated_text.index("Page 3")
+            page04_index = generated_text.index("Page 4")
+            page05_index = generated_text.index("Page 5")
+            page06_index = generated_text.index("Page 6")
+            page07_index = generated_text.index("Page 7")
+            page08_index = generated_text.index("Page 8")
+            page09_index = generated_text.index("Page 9")
+            # page10_index = generated_text.index("Page 10") if "Page 10" in generated_text else len(generated_text)
+            page10_index = generated_text.index("Page 10")
+            print(f'This is a print of page10_index: {page10_index}')
 
 
+            page01_text = generated_text[page01_index + 8:page02_index]
+            print(f'This is a print of page01_text: {page01_text}')
+            page02_text = generated_text[page02_index + 8:page03_index]
+            page03_text = generated_text[page03_index + 8:page04_index]
+            page04_text = generated_text[page04_index + 8:page05_index]
+            page05_text = generated_text[page05_index + 8:page06_index]
+            page06_text = generated_text[page06_index + 8:page07_index]
+            page07_text = generated_text[page07_index + 8:page08_index]
+            page08_text = generated_text[page08_index + 8:page09_index]
+            page09_text = generated_text[page09_index + 8:page10_index]
+            page10_text = generated_text[page10_index + 9:]
+            print(f'This is a print of page10_text: {page10_text}')
 
 
             returned_story = ChatGptResponse(
                 full_response=generated_text,
                 storyinput_id=new_story.id,
+                page01_text=page01_text,
+                page02_text=page02_text,
+                page03_text=page03_text,
+                page04_text=page04_text,
+                page05_text=page05_text,
+                page06_text=page06_text,
+                page07_text=page07_text,
+                page08_text=page08_text,
+                page09_text=page09_text,
+                page10_text=page10_text
             )
             db.session.add(returned_story)
             db.session.commit()
@@ -289,14 +293,37 @@ def create_story():
 
 
 
-# Route to check responses
-@app.route("/checkresponse")
-def storycheck():
-    storyresponse = ChatGptResponse.query.filter_by(id=2).first()
-    if storyresponse:
-        return "The story response ID from ChaptGPT is {} and the text is is {}".format(storyresponse.id, storyresponse.full_response)
+# Route to check Chat GPT responses
+@app.route("/chatgptresponses/<int:id>")
+def chatgpt_responses(id):
+    chatgpt_response = ChatGptResponse.query.filter_by(id=id).first()
+    if chatgpt_response:
+        return f'''The story response ID from ChaptGPT is: <br>
+        {chatgpt_response.id} <br>
+        <br>
+        and the text is is {chatgpt_response.full_response} <br>
+        <br>
+        Page 1: <br>
+        {chatgpt_response.page01_text}<br><br>
+        Page 2: <br>
+        {chatgpt_response.page02_text}<br><br>
+
+        '''
     else:
-        return "No story response found with that id"
+        return "No ChatGPT story response found with that id"
+
+
+@app.route("/storyinputs/<int:id>")
+def get_story_by_id(id):
+    story_input = StoryInput.query.filter_by(id=id).first()
+    if story_input:
+        return story_input.to_dict()
+    else:
+        return "No Story Input response found with that id"
+
+
+
+
 
 
 

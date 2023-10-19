@@ -15,9 +15,7 @@ faker = "*"
 openai = "*"
 flask_bcrypt = "1.0.1"
 flask-login = "*"
-
-
-
+midjourney-api = "*"
 
 [requires]
 python_full_version = "3.8.13"
