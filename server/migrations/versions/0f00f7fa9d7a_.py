@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 351f92f441e0
+Revision ID: 0f00f7fa9d7a
 Revises: 
-Create Date: 2023-10-15 16:57:50.100665
+Create Date: 2023-10-19 10:56:38.546760
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '351f92f441e0'
+revision = '0f00f7fa9d7a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,11 +28,10 @@ def upgrade():
     op.create_table('story_inputs',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('child_name', sa.String(), nullable=False),
-    sa.Column('child_age', sa.Integer(), nullable=False),
+    sa.Column('child_age', sa.String(), nullable=False),
+    sa.Column('child_pronouns', sa.String(), nullable=False),
     sa.Column('child_race', sa.String(), nullable=False),
     sa.Column('child_hairstyle', sa.String(), nullable=False),
-    sa.Column('child_eyecolor', sa.String(), nullable=False),
-    sa.Column('child_other_features', sa.String(), nullable=False),
     sa.Column('child_location', sa.String(), nullable=False),
     sa.Column('child_clothing', sa.String(), nullable=False),
     sa.Column('child_interests', sa.String(), nullable=False),
@@ -44,36 +43,31 @@ def upgrade():
     op.create_table('chatgpt_responses',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('full_response', sa.String(), nullable=False),
-    sa.Column('front_cover', sa.String(), nullable=False),
-    sa.Column('title_page', sa.String(), nullable=False),
+    sa.Column('title_text', sa.String(), nullable=True),
     sa.Column('page01_text', sa.String(), nullable=True),
     sa.Column('page02_text', sa.String(), nullable=True),
     sa.Column('page03_text', sa.String(), nullable=True),
     sa.Column('page04_text', sa.String(), nullable=True),
     sa.Column('page05_text', sa.String(), nullable=True),
     sa.Column('page06_text', sa.String(), nullable=True),
-    sa.Column('page07_text', sa.String(), nullable=True),
-    sa.Column('page08_text', sa.String(), nullable=True),
-    sa.Column('page09_text', sa.String(), nullable=True),
-    sa.Column('page10_text', sa.String(), nullable=True),
-    sa.Column('back_cover', sa.String(), nullable=True),
+    sa.Column('page01_Dalleprompt', sa.String(), nullable=True),
+    sa.Column('page02_Dalleprompt', sa.String(), nullable=True),
+    sa.Column('page03_Dalleprompt', sa.String(), nullable=True),
+    sa.Column('page04_Dalleprompt', sa.String(), nullable=True),
+    sa.Column('page05_Dalleprompt', sa.String(), nullable=True),
+    sa.Column('page06_Dalleprompt', sa.String(), nullable=True),
     sa.Column('storyinput_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['storyinput_id'], ['story_inputs.id'], name=op.f('fk_chatgpt_responses_storyinput_id_story_inputs')),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('dalle_responses',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('front_cover_imageurl', sa.String(), nullable=False),
-    sa.Column('page01_imageurl', sa.String(), nullable=False),
-    sa.Column('page02_imageurl', sa.String(), nullable=False),
-    sa.Column('page03_imageurl', sa.String(), nullable=False),
-    sa.Column('page04_imageurl', sa.String(), nullable=False),
-    sa.Column('page05_imageurl', sa.String(), nullable=False),
-    sa.Column('page06_imageurl', sa.String(), nullable=False),
-    sa.Column('page07_imageurl', sa.String(), nullable=False),
-    sa.Column('page08_imageurl', sa.String(), nullable=False),
-    sa.Column('page09_imageurl', sa.String(), nullable=False),
-    sa.Column('page10_imageurl', sa.String(), nullable=False),
+    sa.Column('page01_imageurl', sa.String(), nullable=True),
+    sa.Column('page02_imageurl', sa.String(), nullable=True),
+    sa.Column('page03_imageurl', sa.String(), nullable=True),
+    sa.Column('page04_imageurl', sa.String(), nullable=True),
+    sa.Column('page05_imageurl', sa.String(), nullable=True),
+    sa.Column('page06_imageurl', sa.String(), nullable=True),
     sa.Column('storyinput_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['storyinput_id'], ['story_inputs.id'], name=op.f('fk_dalle_responses_storyinput_id_story_inputs')),
     sa.PrimaryKeyConstraint('id')
