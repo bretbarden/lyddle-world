@@ -55,7 +55,7 @@ function StoryReturn() {
             <button onClick={handleNext} disabled={currentPage === data.pages.length - 1}>Next Page</button>
             <div>
                 <p>{data.pages[currentPage].text}</p>
-                <img src={data.pages[currentPage].imageurl} alt="Story image" />
+                <img src={data.pages[currentPage].imageurl} alt="Story image" style={{ width: '100%', height: 'auto' }}/>
             </div>
         </div>
     );

@@ -77,6 +77,12 @@ p a {
   /* Add other styles specific to this form's inputs here */
 }
 
+
+.login-form input {
+  width: 40%; /* Adjust the width as needed */
+  /* Add other styles specific to this form's inputs here */
+}
+
 /* If there are any other elements where you need to ensure the text color is white, you can add them here. */
 
 

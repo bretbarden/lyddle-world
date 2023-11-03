@@ -217,7 +217,7 @@ def create_story():
             # Original prompt was not generating the right names
             # prompt = f"Python dictionary: {new_story}. Please write a 10-page children's book about the child named in this dictionary, incorporating some of the parameters in the dictionary. Please make the story relevant to the child's interests and have the child overcome some kind of obstacle."
 
-            prompt = f"Please write a 6-page children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Do not use quotations in any of the response you provide. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page, followed by the text of the story page. After the text of each story page, please include Dall-E prompts for each page, with each description beginning explicitly with 'Dalle-E 01' for instance so that I can parse it later, where the '01' corresponds to the page number. Each Dall-E prompt MUST incorporate the following five points of guidance: (1) MUST INCLUDE a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2)  MUST EXPLICTLY DESCRIBE the background (3) MUST EXPLICITLY STATE that any people depicted being around only one-eight the size of the total Dall-E image (4) MUST EXPLICITLY STATE that all people in the image should be faceless, (5) MUST EXPLICITLY STATE that the style should be a digital art illustration, and (6) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Lydia, a 13-year-old Asian girl with straight black hair down to her shoulders wearing a green dress. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
+            prompt = f"Do not use any quotation marks of any kind in your response. Please write a 6-page (exactly 6 pages - no more or less) children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page, followed by the text of the story page. After the text of each story page, please include Dall-E prompts for each page, with each description beginning explicitly with 'Dalle-E 01' for instance so that I can parse it later, where the '01' corresponds to the page number. Each Dall-E prompt MUST incorporate the following five points of guidance: (1) MUST INCLUDE a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2)  MUST EXPLICTLY DESCRIBE the background (3) MUST EXPLICITLY STATE that any people depicted being around only one-eight the size of the total Dall-E image (4) MUST EXPLICITLY STATE that all people in the image should be faceless, (5) MUST EXPLICITLY STATE that the style should be a digital art illustration, and (6) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Lydia, a 13-year-old Asian girl with straight black hair down to her shoulders wearing a green dress. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
 
             chatgpt_response = openai.Completion.create(
                 engine="gpt-3.5-turbo-instruct",
@@ -305,13 +305,15 @@ def create_story():
             db.session.add(returned_story)
             db.session.commit()
 
-            dalle_mainprompt = "All people should be faceless. Any people should be around one-eigth the size fo the image."
-
+            # dalle_mainprompt = "All people should be faceless. Any people should be around one-eigth the size of the image."
+            dalle_mainprompt = "Image in the style of Leonid Afremov. Any people should be around one-eigth the size of the image."
+            
             # Things to try:
             # Claude Monet
             # Leonid Afremov
             # Caspar David Friedrich, Wanderer above the Sea of Fog
             # Georges Seurat, A Sunday Afternoon on the Island of La Grande Jatte
+            # Gideon Rubin famous faceless painter but colors too bland
 
 
             response_dalle01 = openai.Image.create(
@@ -320,7 +322,7 @@ def create_story():
             size="1024x1024"
             )
             page01_imageurl = response_dalle01['data'][0]['url']
-            print(page01_imageurl)
+            print(f'Page 01 dalle-E illustration successfully generated: {page01_imageurl}')
 
             response_dalle02 = openai.Image.create(
             prompt=f'{dalle_mainprompt}{page02_dalleprompt}',
@@ -328,7 +330,7 @@ def create_story():
             size="1024x1024"
             )
             page02_imageurl = response_dalle02['data'][0]['url']
-            print(page02_imageurl)
+            print(f'Page 02 dalle-E illustration successfully generated: {page02_imageurl}')
 
             response_dalle03 = openai.Image.create(
             prompt=f'{dalle_mainprompt}{page03_dalleprompt}',
@@ -336,7 +338,7 @@ def create_story():
             size="1024x1024"
             )
             page03_imageurl = response_dalle03['data'][0]['url']
-            print(page03_imageurl)
+            print(f'Page 03 dalle-E illustration successfully generated: {page03_imageurl}')
 
 
             response_dalle04 = openai.Image.create(
@@ -345,7 +347,7 @@ def create_story():
             size="1024x1024"
             )
             page04_imageurl = response_dalle04['data'][0]['url']
-            print(page04_imageurl)
+            print(f'Page 04 dalle-E illustration successfully generated: {page04_imageurl}')
 
             response_dalle05 = openai.Image.create(
             prompt=f'{dalle_mainprompt}{page05_dalleprompt}',
@@ -353,7 +355,7 @@ def create_story():
             size="1024x1024"
             )
             page05_imageurl = response_dalle05['data'][0]['url']
-            print(page05_imageurl)
+            print(f'Page 05 dalle-E illustration successfully generated: {page05_imageurl}')
 
             response_dalle06 = openai.Image.create(
             prompt=f'{dalle_mainprompt}{page06_dalleprompt}',
@@ -361,7 +363,7 @@ def create_story():
             size="1024x1024"
             )
             page06_imageurl = response_dalle06['data'][0]['url']
-            print(page06_imageurl)
+            print(f'Page 06 dalle-E illustration successfully generated: {page06_imageurl}')
 
 
             returned_illustrations= DallEResponse(
