@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap');
 :root {
   --bg: #333333;
   --header: #fff;
@@ -13,12 +14,16 @@ input, label {
 
 /* Set the background of the entire page to black */
 body {
+  font-family: 'Roboto', sans-serif;
+
   background-color: #333333;
   color: white; /* This will set the general text color to white */
 }
 
 /* Set the color of headings to white */
 h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+
   color: white;
 }
 
@@ -27,7 +32,15 @@ a {
   color: white;
 }
 
-/* Optional: Set hover effect for links */
+
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover, a:focus {
+  color: var(--link);
+}
+
 a:hover {
   color: gray; /* You can adjust this to any color for hover effect */
 }
@@ -56,6 +69,14 @@ nav > div > nav > a:hover {
   color: #007BFF;  /* change to desired hover color */
 }
 
+p a {
+  color: #007BFF;
+}
+.story-form input {
+  width: 60%; /* Adjust the width as needed */
+  /* Add other styles specific to this form's inputs here */
+}
+
 /* If there are any other elements where you need to ensure the text color is white, you can add them here. */
 
 
@@ -69,3 +90,31 @@ Pastel Lavender: #D8BFD8
 Lighter and slightly towards pink, giving a delicate feel.
 Lilac Lavender: #C8A2C8
 Also known as "lilac", this is a very balanced shade of lavender. */
+input, button, select, textarea {
+  font: inherit;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: var(--link);
+  color: white;
+  border: none;
+  padding: 0.75em 1.5em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, button:focus {
+  background-color: darken(var(--link), 10%);
+}
+
+/* Responsive design example */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+}

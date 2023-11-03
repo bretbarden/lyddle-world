@@ -4,7 +4,7 @@ function Contact (){
 
     return(
 
-        <h1> For more information, contact lyddleworld@gmail.com</h1>
+        <p> For more information or for product support and troubleshooting, please contact <a href="mailto:lyddleworld@gmail.com">lyddleworld@gmail.com</a></p>
     )
 }
 

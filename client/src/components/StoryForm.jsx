@@ -48,7 +48,9 @@ function StoryForm() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <p>To create your story, please complete the form below. It's as simple as that!</p>
+            <p>After you submit, it may take a moment for our storytellers to craft the perfect tale. Once they've worked their magic, you'll automatically be redirected to your Lyddle One's story.</p>
+            <form onSubmit={handleSubmit}  className="story-form">
             <label htmlFor="childName">Name</label>
             <input
                 type="text"
@@ -149,7 +151,7 @@ function StoryLoading() {
         <div>
             <h2> 🌈 Writing your story! </h2>
             <h3> 🖋️ Crafting perfect prose... </h3>
-            <h3> 🎨 Illustrating magical memories... </h3>
+            <h3> 🎨 Illustrating magical moments... </h3>
             <img src={lyddleImage} alt="Lydia"  style={{ width: '30%', height: 'auto' }}/>
         </div>
     );
