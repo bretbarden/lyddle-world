@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import lyddleImage from '../assets/Lyddle.png';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 const URL = "/api/v1";
 
@@ -10,20 +10,38 @@ function StoryReturn() {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await fetch(URL + `/getlaststory`);
-            const result = await response.json();
-            setData(result);
+            try {
+                const response = await fetch(URL + '/getlaststory');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const result = await response.json();
+                setData(result);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
 
         fetchData();
     }, []);
 
     if (!data) {
-        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Loading...<br></br><img src={lyddleImage} alt="Lydia"  style={{ width: '30%', height: 'auto' }}/></div>;
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                Loading...<br />
+                <img src={lyddleImage} alt="Lydia" style={{ width: '30%', height: 'auto' }} />
+            </div>
+        );
     }
 
+    if (!data.pages || data.pages.length === 0) {
+        return <div>No story data available.</div>;
+    }
+
+    console.log('Received data:', data);
+
     const handleNext = () => {
-        setCurrentPage((prevPage) => Math.min(prevPage + 1, 5));
+        setCurrentPage((prevPage) => Math.min(prevPage + 1, data.pages.length - 1));
     };
 
     const handlePrev = () => {
@@ -33,12 +51,12 @@ function StoryReturn() {
     return (
         <div>
             <h1>{data.title_text}</h1>
+            <button onClick={handlePrev} disabled={currentPage === 0}>Previous Page</button>
+            <button onClick={handleNext} disabled={currentPage === data.pages.length - 1}>Next Page</button>
             <div>
                 <p>{data.pages[currentPage].text}</p>
                 <img src={data.pages[currentPage].imageurl} alt="Story image" />
             </div>
-            <button onClick={handlePrev} disabled={currentPage === 0}>Previous</button>
-            <button onClick={handleNext} disabled={currentPage === 5}>Next</button>
         </div>
     );
 }

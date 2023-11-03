@@ -6,6 +6,7 @@ import UserDetails from "./UserPanel";
 import Login from "./UserPanel/Login";
 import Signup from "./UserPanel/Signup"
 import { Outlet } from 'react-router-dom'
+import Stories from './Stories'
 
 
 const POST_HEADERS = {

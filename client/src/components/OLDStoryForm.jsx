@@ -8,7 +8,7 @@ const POST_HEADERS = {
     'Accept': 'application/json'
   }
   
-const URL = "/api/v1"
+
 
 
 
@@ -49,12 +49,12 @@ function StoryFormOLD (){
 
         let newStoryInput = {childName, childAge, childPronouns, childRace, childHairStyle, childLocation, childClothing, childInterests, storySetting}
 
-        fetch(URL + '/stories', {
+        fetch('/createstory', {
             method: "POST",
             headers: POST_HEADERS,
             body: JSON.stringify(newStoryInput)
         })
-        .then( ()=> navigate('/storyreturn'))
+        .then( ()=> navigate('/stories'))
         // TO UPDATE: Add error handling on the post here
         // Need to make sure that the backend has time to process, 
         // so may need a loading page here while it generates, 

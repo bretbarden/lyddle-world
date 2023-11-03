@@ -30,7 +30,7 @@ function StoryForm() {
 
         let newStoryInput = { childName, childAge, childPronouns, childRace, childHairStyle, childLocation, childClothing, childInterests, storySetting };
 
-        fetch(URL + '/stories', {
+        fetch(URL + '/createstory', {
             method: "POST",
             headers: POST_HEADERS,
             body: JSON.stringify(newStoryInput)
