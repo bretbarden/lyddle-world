@@ -1,0 +1,79 @@
+:root {
+  --bg: #333333;
+  --header: #fff;
+  --link: #61dafb;
+  --text: hsla(0, 0%, 100%, 0.88);
+}
+
+
+input, label {
+  display:flex;
+}
+
+
+/* Set the background of the entire page to black */
+body {
+  background-color: #333333;
+  color: white; /* This will set the general text color to white */
+}
+
+/* Set the color of headings to white */
+h1, h2, h3, h4, h5, h6 {
+  color: white;
+}
+
+/* Set the color of links to white */
+a {
+  color: white;
+}
+
+/* Optional: Set hover effect for links */
+a:hover {
+  color: gray; /* You can adjust this to any color for hover effect */
+}
+
+/* Styling for the main navbar container */
+nav {
+  display: flex;
+  justify-content: space-between;  /* spaces out the logo and the nav items */
+  padding: 10px 30px;  /* adding some padding around the entire navbar */
+}
+
+/* Styling for the individual nav items container */
+nav > div > nav {
+  display: flex;
+  gap: 15px;  /* adds space between each link */
+}
+
+/* Optional: Styling for the links */
+nav > div > nav > a {
+  text-decoration: none;  /* removes the underline */
+  color: inherit;  /* uses the parent's color, can be replaced with a color of choice */
+  transition: color 0.2s;  /* smooth transition for hover effect */
+}
+
+nav > div > nav > a:hover {
+  color: #007BFF;  /* change to desired hover color */
+}
+
+p a {
+  color: #007BFF;
+}
+.story-form input {
+  width: 60%; /* Adjust the width as needed */
+  /* Add other styles specific to this form's inputs here */
+}
+
+/* If there are any other elements where you need to ensure the text color is white, you can add them here. */
+
+
+/* Soft Lavender: #E6E6FA
+This color is also known as "lavender" in the named HTML colors.
+Rich Lavender: #9976A8
+A bit deeper and more towards the purple side.
+Dusty Lavender: #B39BC8
+This is a muted tone, which looks elegant and subtle.
+Pastel Lavender: #D8BFD8
+Lighter and slightly towards pink, giving a delicate feel.
+Lilac Lavender: #C8A2C8
+Also known as "lilac", this is a very balanced shade of lavender. */

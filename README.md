@@ -1,4 +1,4 @@
-# Lyddle Books Full-Stack Application
+#Lyddle World Full-Stack Application
 
 # A note on API keys
 You will need your own OpenAI API to run the application. It can be called from a apikeys.py

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+// import { Switch, Route } from "react-router-dom";
 import Header from "./Header";
-import MainPage from "./MainPage";
+// import MainPage from "./MainPage";
 import UserDetails from "./UserPanel";
-import Login from "./UserPanel/Login";
-import Signup from "./UserPanel/Signup"
+// import Login from "./UserPanel/Login";
+// import Signup from "./UserPanel/Signup"
 import { Outlet } from 'react-router-dom'
-import Stories from './Stories'
+// import Stories from './Stories'
+// Note: Some components above turned off since currently not used
 
 
 const POST_HEADERS = {
@@ -105,7 +106,7 @@ function App() {
   return (
     <div className="App">
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-        <h1> ✨📚 Lyddle Books 📚✨</h1>
+        <h1> ✨📚 Lyddle World 📚✨</h1>
       </div>
       <div>
         <Header />

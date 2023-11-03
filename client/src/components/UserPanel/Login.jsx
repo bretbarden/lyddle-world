@@ -20,7 +20,7 @@ function Login({attemptLogin}) {
   // RENDER //
 
   return (
-    <form className='user-form' onSubmit={handleSubmit}>
+    <form className='user-form' onSubmit={handleSubmit} >
 
       <h2>Login</h2>
 
