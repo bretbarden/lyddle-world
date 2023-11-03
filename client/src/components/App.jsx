@@ -6,6 +6,7 @@ import UserDetails from "./UserPanel";
 import Login from "./UserPanel/Login";
 import Signup from "./UserPanel/Signup"
 import { Outlet } from 'react-router-dom'
+import Stories from './Stories'
 
 
 const POST_HEADERS = {
@@ -103,7 +104,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1> Login or Signup  </h1>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        <h1> ✨📚 Lyddle Books 📚✨</h1>
+      </div>
+      <div>
         <Header />
         <Outlet />
         {/* TO UPDATE: REPLACE BELOW WITH SEPARATE SIGNUP AND LOGIN */}
@@ -112,8 +116,7 @@ function App() {
         attemptLogin={attemptLogin}
         attemptSignup={attemptSignup}
         logout={logout} />
-       
-
+      </div>
     </div>
   )
 }

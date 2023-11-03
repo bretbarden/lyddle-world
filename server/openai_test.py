@@ -39,7 +39,7 @@ test_text01 = "Jenna was a 13 year-old girl who lived in Florida. She loved the 
 # "Digital art of a picturesque Florida setting with a focus on sailing. In a small section, Jenna, a 13-year-old girl with a passion for sailing, is depicted holding a compass or a map, symbolizing her determination. The rest of the image is dominated by the vast sea, with several sailboats, their white sails full from the wind, racing towards the blue horizon. The ambiance should evoke a sense of adventure and aspiration."
 
 response_dalle = openai.Image.create(
-  prompt="igital art illustration of a children's park in New York City. In the centre of the image, occupying about one-eighth of the image size, is Lydia, a 2-year-old child wearing a pink dress, with Asian features, and wavy brown hair. Her parents and other children can be seen in the background, playing on the swings or having a picnic in the park. All characters should be faceless or shown looking away from us. The essence of the image should capture Lydia's joy and happiness on a family outing.",
+  prompt="Digital art illustration of a children's park in New York City. In the centre of the image, occupying about one-eighth of the image size, is Lydia, a 2-year-old child wearing a pink dress, with Asian features, and wavy brown hair. Her parents and other children can be seen in the background, playing on the swings or having a picnic in the park. All characters should be faceless or shown looking away from us. The essence of the image should capture Lydia's joy and happiness on a family outing.",
   n=1,
   size="1024x1024"
 )

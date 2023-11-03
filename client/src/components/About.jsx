@@ -4,7 +4,7 @@ function About (){
 
     return(
 
-        <h1> This is an About Page that will have more content later... </h1>
+        <h1> Dedidcated to my favorite Lyddle one, my daughter, Lydia </h1>
     )
 }
 

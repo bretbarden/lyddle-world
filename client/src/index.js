@@ -12,6 +12,7 @@ import Signup from './components/UserPanel/Signup.jsx'
 import Contact from "./components/Contact";
 import StoryReturn from "./components/StoryReturn";
 import ErrorPage from "./components/ErrorPage";
+import Stories from "./components/Stories"
 
 
 //Loaders would go here//
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
             {
                 path: "contact",
                 element: <Contact />
+            },
+            {
+                path: "Stories",
+                element: <Stories/>
             },
             {
                 path: "storyreturn",
