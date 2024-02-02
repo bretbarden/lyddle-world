@@ -8,7 +8,8 @@ from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 import openai
-import re
+from openai import OpenAI
+
 
 
 # Local imports
@@ -19,12 +20,17 @@ import apikeys
 # Set API key
 openai.api_key = apikeys.openai_apikey
 
+# Use the new client notation that OpenAI implemented
+client = OpenAI()
+
 # Set up brcrypt for password hashing
 bcrypt = Bcrypt(app)
 
 
 # CHECK THIS: May not need this
 URL_PREFIX = '/api/v1'
+
+
 
 
 # Helps methods to condense code
@@ -315,53 +321,65 @@ def create_story():
             # Georges Seurat, A Sunday Afternoon on the Island of La Grande Jatte
             # Gideon Rubin famous faceless painter but colors too bland
 
-
-            response_dalle01 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page01_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            # 2023.11.21 Model upgraded for Dall-E 3 and using OpenAI syntax
+            response_dalle01 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page01_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard"
+                )
             page01_imageurl = response_dalle01['data'][0]['url']
             print(f'Page 01 dalle-E illustration successfully generated: {page01_imageurl}')
 
-            response_dalle02 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page02_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            response_dalle02 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page02_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard"
+                )
             page02_imageurl = response_dalle02['data'][0]['url']
             print(f'Page 02 dalle-E illustration successfully generated: {page02_imageurl}')
 
-            response_dalle03 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page03_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            response_dalle03 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page03_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard"
+                )
             page03_imageurl = response_dalle03['data'][0]['url']
             print(f'Page 03 dalle-E illustration successfully generated: {page03_imageurl}')
 
 
-            response_dalle04 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page04_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            response_dalle04 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page04_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard"
+                )
             page04_imageurl = response_dalle04['data'][0]['url']
             print(f'Page 04 dalle-E illustration successfully generated: {page04_imageurl}')
 
-            response_dalle05 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page05_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            response_dalle05 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page05_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard",
+                )
             page05_imageurl = response_dalle05['data'][0]['url']
             print(f'Page 05 dalle-E illustration successfully generated: {page05_imageurl}')
 
-            response_dalle06 = openai.Image.create(
-            prompt=f'{dalle_mainprompt}{page06_dalleprompt}',
-            n=1,
-            size="1024x1024"
-            )
+            response_dalle06 = client.images.generate(
+                model="dall-e-3",
+                prompt=f'{dalle_mainprompt}{page06_dalleprompt}',
+                n=1,
+                size="1024x1024",
+                quality="standard"
+                )
             page06_imageurl = response_dalle06['data'][0]['url']
             print(f'Page 06 dalle-E illustration successfully generated: {page06_imageurl}')
 
