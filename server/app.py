@@ -15,10 +15,10 @@ from openai import OpenAI
 # Local imports
 from config import app, db, api
 from models import User, StoryInput, ChatGptResponse, DallEResponse
-import apikeys
+# import apikeys
 
 # Set API key
-openai.api_key = apikeys.openai_apikey
+# openai.api_key = apikeys.openai_apikey
 
 # Use the new client notation that OpenAI implemented
 client = OpenAI()
@@ -225,10 +225,27 @@ def create_story():
 
             prompt = f"Do not use any quotation marks of any kind in your response. Please write a 6-page (exactly 6 pages - no more or less) children's book about a child named {new_story.child_name} who is {new_story.child_age} years old, uses {new_story.child_pronouns} pronouns, is from {new_story.child_location}, and is interested in {new_story.child_interests}. The book's setting should be {new_story.story_setting}. {new_story.child_name} should overcome some kind of obstacle in the story. Include a title for the story at the beginning of your response after the phrase 'TITLE:'. Please include page numbers like 'Page 01' for instance, at the beginning of each page, followed by the text of the story page. After the text of each story page, please include Dall-E prompts for each page, with each description beginning explicitly with 'Dalle-E 01' for instance so that I can parse it later, where the '01' corresponds to the page number. Each Dall-E prompt MUST incorporate the following five points of guidance: (1) MUST INCLUDE a description of {new_story.child_name}: a child aged {new_story.child_age}, using {new_story.child_pronouns} pronouns, wearing {new_story.child_clothing}, are {new_story.child_race}, with {new_story.child_hairstyle} hair, (2)  MUST EXPLICTLY DESCRIBE the background (3) MUST EXPLICITLY STATE that any people depicted being around only one-eight the size of the total Dall-E image (4) MUST EXPLICITLY STATE that all people in the image should be faceless, (5) MUST EXPLICITLY STATE that the style should be a digital art illustration, and (6) be as consistent across the page illustrations as possible. An example of the type of Dall-E image prompts to inspire you is 'Digital art illustration of a Florida beach scene with bright sunshine and sparkling sea. On one side, occupying about an eighth of the image, is Lydia, a 13-year-old Asian girl with straight black hair down to her shoulders wearing a green dress. In the background, there's a sailboat with white sails billowing against the blue horizon. The sand is golden, and there are seashells scattered around. The essence of the image should capture Jenna's love for sailing and her ambition to be the best sailor.'"
 
-            chatgpt_response = openai.Completion.create(
-                engine="gpt-3.5-turbo-instruct",
-                prompt=prompt,
-                max_tokens=3500
+            # chatgpt_response = client.Completion.create(
+            #     engine="gpt-3.5-turbo-instruct",
+            #     prompt=prompt,
+            #     max_tokens=3500
+            # )
+
+            chatgpt_response = client.chat.completions.create(
+                model="gpt-4-vision-preview",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {"type": "text", "text": "What’s in this image?"},
+                            {
+                                "type": "image_url",
+                                "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+                            },
+                        ],
+                    }
+                ],
+                max_tokens=300,
             )
             generated_text = chatgpt_response.choices[0].text.strip()
             print(f'This is a print of generated_text: {generated_text}')
